@@ -1,0 +1,14 @@
+[
+  {
+    "port": 3306,
+    "listening": false
+  },
+  {
+    "port": 8080,
+    "listening": false
+  },
+  {
+    "port": 8082,
+    "listening": false
+  }
+]

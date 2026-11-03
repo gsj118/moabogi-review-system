@@ -1,0 +1,20 @@
+{
+  "scope": "Reuse audit; one JSP change only",
+  "application_changes": [
+    "src\\main\\webapp\\WEB-INF\\views\\records.jsp"
+  ],
+  "all_previous_evidence_hashes_unchanged": true,
+  "java_sql_db_build_config_unchanged": true,
+  "unit_test_run": {
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "package": "BUILD SUCCESS; JDK15 source/target1.8 unchanged",
+  "targeted_browser_checks": 23,
+  "previous_integration26_browser80_layout27": "Historical results reviewed, not rerun or added to current check counts",
+  "app_data_rows_hash_equal": true,
+  "remote_analysis_repeated": false,
+  "external_redmine_push_deployment": false
+}

@@ -1,0 +1,7 @@
+<%@ page pageEncoding="UTF-8" %>
+<div class="history-summary" aria-label="이 작품의 나의 전체 이력 요약">
+<div><small>나의 현재 상태</small><strong><c:out value="${stateLabels[historySummary.currentState]}" default="미지정"/></strong></div>
+<div><small>전체 감상 기록</small><strong><c:out value="${historySummary.recordCount}"/>건</strong></div>
+<div><small>최근 감상일</small><strong><c:out value="${historySummary.lastViewedOn}" default="아직 기록 없음"/></strong></div>
+<div><small>최근 유효 평점</small><strong class="rating"><c:choose><c:when test="${historySummary.latestRating!=null}">★ <fmt:formatNumber value="${historySummary.latestRating}" pattern="0.0"/></c:when><c:otherwise>미평점</c:otherwise></c:choose></strong><c:if test="${historySummary.latestRating!=null}"><small><c:out value="${historySummary.latestRatingOn}"/> 기준</small></c:if></div>
+</div>

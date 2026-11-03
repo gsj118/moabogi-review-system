@@ -1,0 +1,23 @@
+{
+  "unchanged_files": {
+    "pom.xml": true,
+    "db/schema.sql": true,
+    "db/demo-data.sql": true,
+    "src/main/resources/mapper/StatsMapper.xml": true,
+    "src/main/java/org/mnu/service/StatsService.java": true,
+    "src/main/java/org/mnu/config/SecurityConfig.java": true,
+    "src/main/java/org/mnu/domain/QueryFilter.java": true
+  },
+  "app_database_rows_and_hashes_match": true,
+  "baseline": "After resumption, before executing tests; not the historic20261014 row counts",
+  "row_counts": {
+    "record_submission": 2,
+    "user_work_state": 4,
+    "viewing_record": 8,
+    "work_genre": 5,
+    "work": 4,
+    "app_user": 2,
+    "genre": 8
+  },
+  "no_remote_push_deployment_or_redmine_write": true
+}

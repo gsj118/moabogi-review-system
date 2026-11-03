@@ -1,0 +1,547 @@
+{
+  "date": "2026-10-14",
+  "checks": 88,
+  "cases": [
+    {
+      "name": "F01 0/0",
+      "actual": "—",
+      "expected": "—",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 0",
+      "actual": "0건",
+      "expected": "0건",
+      "passed": true
+    },
+    {
+      "name": "F01 0/4",
+      "actual": "0%",
+      "expected": "0%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 4",
+      "actual": "4건",
+      "expected": "4건",
+      "passed": true
+    },
+    {
+      "name": "F01 4/4",
+      "actual": "100%",
+      "expected": "100%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 4",
+      "actual": "4건",
+      "expected": "4건",
+      "passed": true
+    },
+    {
+      "name": "F01 1/4",
+      "actual": "25%",
+      "expected": "25%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 4",
+      "actual": "4건",
+      "expected": "4건",
+      "passed": true
+    },
+    {
+      "name": "F01 2/4",
+      "actual": "50%",
+      "expected": "50%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 4",
+      "actual": "4건",
+      "expected": "4건",
+      "passed": true
+    },
+    {
+      "name": "F01 2/3",
+      "actual": "66.7%",
+      "expected": "66.7%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 3",
+      "actual": "3건",
+      "expected": "3건",
+      "passed": true
+    },
+    {
+      "name": "F01 3/4",
+      "actual": "75%",
+      "expected": "75%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 4",
+      "actual": "4건",
+      "expected": "4건",
+      "passed": true
+    },
+    {
+      "name": "F01 3/17",
+      "actual": "17.6%",
+      "expected": "17.6%",
+      "passed": true
+    },
+    {
+      "name": "F01 denominator 17",
+      "actual": "17건",
+      "expected": "17건",
+      "passed": true
+    },
+    {
+      "name": "F02 no misleading metrics",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "F02 focus error",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F02 retained start",
+      "actual": "2026-10-13",
+      "expected": "2026-10-13",
+      "passed": true
+    },
+    {
+      "name": "F02 corrected query",
+      "actual": "75%",
+      "expected": "75%",
+      "passed": true
+    },
+    {
+      "name": "F02 invalid date hides result",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "F02 invalid date explanation",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F03 first saved review",
+      "actual": "먼저 저장한 감상평 😀",
+      "expected": "먼저 저장한 감상평 😀",
+      "passed": true
+    },
+    {
+      "name": "F03 preserved draft",
+      "actual": "오래된 초안 <script> & \"한글\" 😀",
+      "expected": "오래된 초안 <script> & \"한글\" 😀",
+      "passed": true
+    },
+    {
+      "name": "F03 prevents repeated stale save",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "F03 latest edit link",
+      "actual": "/records/410/edit",
+      "expected": "/records/410/edit",
+      "passed": true
+    },
+    {
+      "name": "F03 latest saved rating",
+      "actual": "5.0",
+      "expected": "5.0",
+      "passed": true
+    },
+    {
+      "name": "F03 latest review for new edit",
+      "actual": "먼저 저장한 감상평 😀",
+      "expected": "먼저 저장한 감상평 😀",
+      "passed": true
+    },
+    {
+      "name": "F04 first page count",
+      "actual": 15,
+      "expected": 15,
+      "passed": true
+    },
+    {
+      "name": "F04 second page count",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "F04 no duplicate or missing record",
+      "actual": 16,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "name": "F04 complex filters maintained",
+      "actual": "252",
+      "expected": "252",
+      "passed": true
+    },
+    {
+      "name": "F04 out-of-range corrected",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 boundary 0",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 boundary -8",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 boundary abc",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 boundary 999999999999999999999",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 genuine empty result",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 actual mobile viewport",
+      "actual": 390,
+      "expected": 390,
+      "passed": true
+    },
+    {
+      "name": "F05 mobile page no overflow",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 overflow hint visible",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 keyboard scroll region",
+      "actual": "0",
+      "expected": "0",
+      "passed": true
+    },
+    {
+      "name": "F05 arrow key scroll",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 first column source reachable",
+      "actual": "/records/375",
+      "expected": "/records/375",
+      "passed": true
+    },
+    {
+      "name": "F05 mobile overflow /records",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 mobile overflow /works",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 mobile overflow /records/410/edit",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F06 safe editable title",
+      "actual": "한글 \"제목\" < > & 공백",
+      "expected": "한글 \"제목\" < > & 공백",
+      "passed": true
+    },
+    {
+      "name": "F06 not automatically saved",
+      "actual": "/works/new",
+      "expected": "/works/new",
+      "passed": true
+    },
+    {
+      "name": "F06 title can be edited before saving",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "A04 back form can submit again",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F06 duplicate detection retained",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "A01 work search error retains form",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "A01 work search error no fake empty result",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "F07 generic message existing",
+      "actual": "아이디 또는 비밀번호를 확인하세요.",
+      "expected": "아이디 또는 비밀번호를 확인하세요.",
+      "passed": true
+    },
+    {
+      "name": "F07 existing username retained",
+      "actual": "합성 아이디 유지 — 실제 화면 시각 확인",
+      "expected": "입력 아이디 유지",
+      "passed": true,
+      "method": "visual; DOM masks username"
+    },
+    {
+      "name": "F07 existing password empty",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F07 missing generic message",
+      "actual": "아이디 또는 비밀번호를 확인하세요.",
+      "expected": "아이디 또는 비밀번호를 확인하세요.",
+      "passed": true
+    },
+    {
+      "name": "F07 missing password empty",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F07 clean failure URL",
+      "actual": "?error",
+      "expected": "?error",
+      "passed": true
+    },
+    {
+      "name": "F07 missing username retained",
+      "actual": "존재하지 않는 합성 아이디 유지 — 실제 화면 시각 확인",
+      "expected": "입력 아이디 유지",
+      "passed": true,
+      "method": "visual; DOM masks username"
+    },
+    {
+      "name": "F08 redirect has only intended flag",
+      "actual": [
+        "registered"
+      ],
+      "expected": [
+        "registered"
+      ],
+      "passed": true
+    },
+    {
+      "name": "F08 successful signup message",
+      "actual": "회원가입이 완료되었습니다. 로그인해 주세요.",
+      "expected": "회원가입이 완료되었습니다. 로그인해 주세요.",
+      "passed": true
+    },
+    {
+      "name": "regression delete cancelled retains 16",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F04 shrunk last page corrected",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "regression latest NULL retains valid percentage",
+      "actual": "50%",
+      "expected": "50%",
+      "passed": true
+    },
+    {
+      "name": "regression latest NULL retains representative",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "regression rating edit recalculates representative",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "regression actual rated record deletion recalculates",
+      "actual": "0%",
+      "expected": "0%",
+      "passed": true
+    },
+    {
+      "name": "regression no representative after valid deletion",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "regression shared work and current state preserved",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 verified 390 viewport /stats",
+      "actual": 390,
+      "expected": 390,
+      "passed": true
+    },
+    {
+      "name": "F05 verified mobile overflow /stats",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 verified 390 viewport /records",
+      "actual": 390,
+      "expected": 390,
+      "passed": true
+    },
+    {
+      "name": "F05 verified mobile overflow /records",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 verified 390 viewport /works",
+      "actual": 390,
+      "expected": 390,
+      "passed": true
+    },
+    {
+      "name": "F05 verified mobile overflow /works",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 verified 390 viewport /records/411/edit",
+      "actual": 390,
+      "expected": 390,
+      "passed": true
+    },
+    {
+      "name": "F05 verified mobile overflow /records/411/edit",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 mobile table hint",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "F05 verified 1440 viewport",
+      "actual": 1440,
+      "expected": 1440,
+      "passed": true
+    },
+    {
+      "name": "F05 verified desktop hint hidden",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "final app existing demo ratio",
+      "actual": "75%",
+      "expected": "75%",
+      "passed": true
+    },
+    {
+      "name": "F02 raw invalid date remains visible",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "A01 final records error no pagination",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "A01 final records error no fake empty heading",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "A05 server-next-day validation",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "A05 rejected future input preserved",
+      "actual": "2026-10-15",
+      "expected": "2026-10-15",
+      "passed": true
+    }
+  ],
+  "physical_phone_test": false,
+  "input_error_3_second_measurement": false,
+  "notes": [
+    "Fixtures used review_system_test; final demo reads and invalid rejected input used review_system without data changes",
+    "Username retention verified visually because DOM masks credentials",
+    "Responsive sizes confirmed after reload:390x844,1440x1000"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "record_submission": {
+    "rows": 2,
+    "sha256": "8e92bcd9950d1420d45a9cbd191603360a3a986a2abaceb2e81a2bce9af4cb50"
+  },
+  "user_work_state": {
+    "rows": 4,
+    "sha256": "1e206927dbf32bdded6f448989fe043c1fb8367df18da951b7dc485335263cb6"
+  },
+  "viewing_record": {
+    "rows": 8,
+    "sha256": "6244ac0fa648bfa1175c2cc364ebdb55e77b830f6c27f2c4f7a4d009e00a352f"
+  },
+  "work_genre": {
+    "rows": 5,
+    "sha256": "3d9aa6d6a3065953bd82d8d4a837f4c12e6eb1069b81ae87ebe2cf94ff9389dc"
+  },
+  "work": {
+    "rows": 4,
+    "sha256": "de01deb34abdf01c52c6a6103bad6ee7eea4af8874e113ab8d5c48a3d8cb3062"
+  },
+  "app_user": {
+    "rows": 2,
+    "sha256": "a03852f9729d1272a06849c9282b78d73ec42e56010cba5a332e467765253f27"
+  },
+  "genre": {
+    "rows": 8,
+    "sha256": "c1a67bac23c3f0cff0d559d5e1c6b65e821c402abd0c100fcb44c76ba7942b2c"
+  }
+}

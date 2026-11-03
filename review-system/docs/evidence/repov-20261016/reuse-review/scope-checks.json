@@ -1,0 +1,100 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "scoped JSP renders200",
+      "passed": true
+    },
+    {
+      "name": "scope announced with work title",
+      "passed": true
+    },
+    {
+      "name": "work scope remains in existing form",
+      "passed": true
+    },
+    {
+      "name": "form submission preserves visible scope",
+      "passed": true
+    },
+    {
+      "name": "clear preserves keyword",
+      "passed": true
+    },
+    {
+      "name": "clear preserves mediaType",
+      "passed": true
+    },
+    {
+      "name": "clear preserves genreId",
+      "passed": true
+    },
+    {
+      "name": "clear preserves from",
+      "passed": true
+    },
+    {
+      "name": "clear preserves to",
+      "passed": true
+    },
+    {
+      "name": "clear preserves sort",
+      "passed": true
+    },
+    {
+      "name": "clear removes workId and stalepage",
+      "passed": true
+    },
+    {
+      "name": "clear is keyboard focusable",
+      "passed": true
+    },
+    {
+      "name": "unscoped page hides scope note/hidden input",
+      "passed": true
+    },
+    {
+      "name": "other works become discoverable",
+      "passed": true
+    },
+    {
+      "name": "empty scope still explains restriction",
+      "passed": true
+    },
+    {
+      "name": "empty scope still has clear action",
+      "passed": true
+    },
+    {
+      "name": "query text safely roundtrips",
+      "passed": true
+    },
+    {
+      "name": "invalid interval retains error withoutfake result",
+      "passed": true
+    },
+    {
+      "name": "scope page nooverflow at390",
+      "passed": true
+    },
+    {
+      "name": "scope controls visible at390",
+      "passed": true
+    },
+    {
+      "name": "scope page nooverflow at320",
+      "passed": true
+    },
+    {
+      "name": "scope controls visible at320",
+      "passed": true
+    },
+    {
+      "name": "no javascript errors",
+      "passed": true
+    }
+  ],
+  "count": 23,
+  "errors": [],
+  "scope": "Read-only local JSP checks; no record mutations, prior26integration/80browser/27layout were not rerun"
+}

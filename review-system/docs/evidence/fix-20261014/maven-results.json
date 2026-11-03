@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-14",
+  "build": "BUILD SUCCESS",
+  "suites": [
+    {
+      "name": "org.mnu.StatsServiceTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.049"
+    },
+    {
+      "name": "org.mnu.ReviewSystemIT",
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "37.711"
+    }
+  ],
+  "note": "Final rerun after query-error presentation changes; historical evidence files unchanged"
+}

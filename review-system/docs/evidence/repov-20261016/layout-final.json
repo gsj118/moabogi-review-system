@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "records body at390",
+      "passed": true
+    },
+    {
+      "name": "records long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "record title uses card width at390",
+      "passed": true
+    },
+    {
+      "name": "edit body at390",
+      "passed": true
+    },
+    {
+      "name": "edit long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "work body at390",
+      "passed": true
+    },
+    {
+      "name": "work long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "works body at390",
+      "passed": true
+    },
+    {
+      "name": "works long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "form body at390",
+      "passed": true
+    },
+    {
+      "name": "form long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "stats body at390",
+      "passed": true
+    },
+    {
+      "name": "stats long username clear of brand at390",
+      "passed": true
+    },
+    {
+      "name": "records body at320",
+      "passed": true
+    },
+    {
+      "name": "records long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "record title uses card width at320",
+      "passed": true
+    },
+    {
+      "name": "edit body at320",
+      "passed": true
+    },
+    {
+      "name": "edit long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "work body at320",
+      "passed": true
+    },
+    {
+      "name": "work long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "works body at320",
+      "passed": true
+    },
+    {
+      "name": "works long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "form body at320",
+      "passed": true
+    },
+    {
+      "name": "form long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "stats body at320",
+      "passed": true
+    },
+    {
+      "name": "stats long username clear of brand at320",
+      "passed": true
+    },
+    {
+      "name": "no javascript page errors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "count": 27,
+  "scope": "CSS-only corrections after the80-check run",
+  "viewport": [
+    390,
+    320
+  ]
+}

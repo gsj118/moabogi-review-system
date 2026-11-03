@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-16 Asia/Seoul",
+  "verdict": "Ready for local technical handover; independent acceptance and real devices remain pending",
+  "application_changes": [
+    "src\\main\\webapp\\WEB-INF\\views\\records.jsp",
+    "src\\main\\webapp\\WEB-INF\\views\\common\\filter.jspf",
+    "src\\main\\webapp\\resources\\css\\app.css",
+    "src\\main\\webapp\\resources\\js\\app.js",
+    "src\\main\\webapp\\WEB-INF\\views\\common\\applied-filters.jspf"
+  ],
+  "documentation_changes": [
+    "README.md",
+    "docs\\design.md",
+    "docs\\requirements.md",
+    "docs\\team-handover.md",
+    "docs\\verification.md"
+  ],
+  "server_sql_db_build_contract_files_unchanged": 33,
+  "retained_repov_evidence_files_unchanged": 77,
+  "application_db_all7tables_identical": true,
+  "maven_verify": {
+    "unit": 2,
+    "mysql_integration": 26,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_package": "BUILD SUCCESS; -DskipTests is not a test run",
+  "existing_browser_assertions": 80,
+  "existing_layout_assertions": 27,
+  "final_additional_assertions": 213,
+  "final_screenshots": 48,
+  "viewports": [
+    1440,
+    390,
+    320
+  ],
+  "javascript_errors": [],
+  "actual_back_persisted_events": [],
+  "persisted_branch_checked_by_synthetic_event": true,
+  "war_matches_all_current_webapp_sources": true,
+  "project_class_major_max": 52,
+  "new_queries_or_runtime_dependencies": false,
+  "external_redmine_push_deployment": false,
+  "rea_or_repov_reanalysis_or_tool_install": false,
+  "final_ports": [
+    {
+      "port": 3306,
+      "listening": false
+    },
+    {
+      "port": 8080,
+      "listening": false
+    },
+    {
+      "port": 8082,
+      "listening": false
+    }
+  ]
+}

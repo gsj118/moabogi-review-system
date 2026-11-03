@@ -1,0 +1,88 @@
+{
+  "database": "review_system_test",
+  "prefix": "repov_00a9599d",
+  "user_ids": [
+    578,
+    579
+  ],
+  "cases": [
+    {
+      "date": "2026-01-01",
+      "rated": 0,
+      "total": 0,
+      "expected": "—",
+      "work_id": 276
+    },
+    {
+      "date": "2026-01-02",
+      "rated": 0,
+      "total": 4,
+      "expected": "0%",
+      "work_id": 277
+    },
+    {
+      "date": "2026-01-03",
+      "rated": 4,
+      "total": 4,
+      "expected": "100%",
+      "work_id": 278
+    },
+    {
+      "date": "2026-01-04",
+      "rated": 1,
+      "total": 4,
+      "expected": "25%",
+      "work_id": 279
+    },
+    {
+      "date": "2026-01-05",
+      "rated": 2,
+      "total": 4,
+      "expected": "50%",
+      "work_id": 280
+    },
+    {
+      "date": "2026-01-06",
+      "rated": 2,
+      "total": 3,
+      "expected": "66.7%",
+      "work_id": 281
+    },
+    {
+      "date": "2026-01-07",
+      "rated": 3,
+      "total": 4,
+      "expected": "75%",
+      "work_id": 282
+    },
+    {
+      "date": "2026-01-08",
+      "rated": 3,
+      "total": 17,
+      "expected": "17.6%",
+      "work_id": 283
+    }
+  ],
+  "genre_id": 564,
+  "page_work_id": 284,
+  "page_record_ids": [
+    1243,
+    1244,
+    1245,
+    1246,
+    1247,
+    1248,
+    1249,
+    1250,
+    1251,
+    1252,
+    1253,
+    1254,
+    1255,
+    1256,
+    1257,
+    1258
+  ],
+  "conflict_work_id": 285,
+  "conflict_record_id": 1259
+}

@@ -1,0 +1,106 @@
+{
+  "cases": [
+    {
+      "name": "compound filters page2 renders 1 of16",
+      "passed": true
+    },
+    {
+      "name": "partial clear keyword removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear mediaType removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear genreId removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear from removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear to removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear sort removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "condition link has visible keyboard focus",
+      "passed": true
+    },
+    {
+      "name": "keyboard partial clear returns to first valid page",
+      "passed": true
+    },
+    {
+      "name": "pagination retains remaining compound conditions",
+      "passed": true
+    },
+    {
+      "name": "existing scope clear preserves6conditions and resets page",
+      "passed": true
+    },
+    {
+      "name": "empty results keep active conditions and scope recovery",
+      "passed": true
+    },
+    {
+      "name": "unsafe title roundtrips as text in remaining condition",
+      "passed": true
+    },
+    {
+      "name": "statistics announces work scope and keeps hidden input",
+      "passed": true
+    },
+    {
+      "name": "statistics submit retains work scope",
+      "passed": true
+    },
+    {
+      "name": "statistics scope clear retains chosen period",
+      "passed": true
+    },
+    {
+      "name": "search reuses exactly3condition chips",
+      "passed": true
+    },
+    {
+      "name": "search partial clear keeps title/type",
+      "passed": true
+    },
+    {
+      "name": "invalid interval keeps error focus and individual recovery",
+      "passed": true
+    },
+    {
+      "name": "removing bad start date recovers stats without erasing end date",
+      "passed": true
+    },
+    {
+      "name": "save success identifies preserved current state",
+      "passed": true
+    },
+    {
+      "name": "real browser Back retains save explanation and usable submit",
+      "passed": true
+    },
+    {
+      "name": "persisted pageshow clears only progress and preserves save effect",
+      "passed": true
+    },
+    {
+      "name": "restored save explanation responds to action choice",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "layouts": [],
+  "realBackPersistedEvents": [],
+  "passed": false,
+  "failure": "page.goto: net::ERR_ABORTED at http://localhost:8082/login\nCall log:\n\u001b[2m  - navigating to \"http://localhost:8082/login\", waiting until \"load\"\u001b[22m\n",
+  "count": 24
+}

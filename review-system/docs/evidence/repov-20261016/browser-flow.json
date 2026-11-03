@@ -1,0 +1,341 @@
+{
+  "browser": "134.0.6998.36",
+  "cases": [
+    {
+      "name": "signup redirects to login",
+      "passed": true
+    },
+    {
+      "name": "login rotates the session identifier",
+      "passed": true
+    },
+    {
+      "name": "HttpOnly and SameSite=Lax on local HTTP",
+      "passed": true
+    },
+    {
+      "name": "member name is escaped",
+      "passed": true
+    },
+    {
+      "name": "manual work and multiple genres registered",
+      "passed": true
+    },
+    {
+      "name": "JSP review output is escaped",
+      "passed": true
+    },
+    {
+      "name": "replay returns original record",
+      "passed": true
+    },
+    {
+      "name": "past record preserves current state",
+      "passed": true
+    },
+    {
+      "name": "same work/date separate submissions are allowed",
+      "passed": true
+    },
+    {
+      "name": "complete action sets current state",
+      "passed": true
+    },
+    {
+      "name": "state-only completion does not create record",
+      "passed": true
+    },
+    {
+      "name": "statistics JSP renders latest non-null rating",
+      "passed": true
+    },
+    {
+      "name": "valid rating percentage reaches actual JSP",
+      "passed": true
+    },
+    {
+      "name": "CSRF rejects unauthenticated change token",
+      "passed": true
+    },
+    {
+      "name": "creator receives no automatic admin privilege",
+      "passed": true
+    },
+    {
+      "name": "future date error render 1 within 3 seconds",
+      "passed": true
+    },
+    {
+      "name": "error preserves viewing date input 1",
+      "passed": true
+    },
+    {
+      "name": "future date error render 2 within 3 seconds",
+      "passed": true
+    },
+    {
+      "name": "error preserves viewing date input 2",
+      "passed": true
+    },
+    {
+      "name": "future date error render 3 within 3 seconds",
+      "passed": true
+    },
+    {
+      "name": "error preserves viewing date input 3",
+      "passed": true
+    },
+    {
+      "name": "other member cannot view personal record",
+      "passed": true
+    },
+    {
+      "name": "other member cannot delete personal record",
+      "passed": true
+    },
+    {
+      "name": "new accounts always have USER role",
+      "passed": true
+    },
+    {
+      "name": "administrator still cannot view another private record",
+      "passed": true
+    },
+    {
+      "name": "administrator genre page renders",
+      "passed": true
+    },
+    {
+      "name": "administrator shared work editor renders",
+      "passed": true
+    },
+    {
+      "name": "referenced work deletion is blocked",
+      "passed": true
+    },
+    {
+      "name": "record edit and UTF-8 persist",
+      "passed": true
+    },
+    {
+      "name": "delete confirmation is a read-only GET",
+      "passed": true
+    },
+    {
+      "name": "record deletion keeps shared work and state",
+      "passed": true
+    },
+    {
+      "name": "logout blocks protected screens",
+      "passed": true
+    },
+    {
+      "name": "malicious content never executes",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio —",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 0%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 100%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 25%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 50%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 66.7%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 75%",
+      "passed": true
+    },
+    {
+      "name": "F01 actual JSP ratio 17.6%",
+      "passed": true
+    },
+    {
+      "name": "F02 invalid interval keeps form and no metrics",
+      "passed": true
+    },
+    {
+      "name": "F02 recovery displays75%",
+      "passed": true
+    },
+    {
+      "name": "F04 page clamp with16records",
+      "passed": true
+    },
+    {
+      "name": "comparison on second page sees earlier rating",
+      "passed": true
+    },
+    {
+      "name": "F03 actual409 preserves draft withoutsave",
+      "passed": true
+    },
+    {
+      "name": "search cards carry private counts/state",
+      "passed": true
+    },
+    {
+      "name": "search direct entry uses COMPLETE and shows summary",
+      "passed": true
+    },
+    {
+      "name": "yesterday shortcut uses server calendar",
+      "passed": true
+    },
+    {
+      "name": "today shortcut uses server calendar",
+      "passed": true
+    },
+    {
+      "name": "save effect explicitly keeps current state",
+      "passed": true
+    },
+    {
+      "name": "counter matches server UTF16 limit",
+      "passed": true
+    },
+    {
+      "name": "saved record skips intermediate null for ratingchange",
+      "passed": true
+    },
+    {
+      "name": "saved detail distinguishes event and fullhistory",
+      "passed": true
+    },
+    {
+      "name": "filtered record list retains fourth order and full comparison",
+      "passed": true
+    },
+    {
+      "name": "work summary unaffected by period and preserves state",
+      "passed": true
+    },
+    {
+      "name": "work no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "records no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "mobile record rows fit container at390",
+      "passed": true
+    },
+    {
+      "name": "form no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "edit no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "stats no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "works no page overflow at390",
+      "passed": true
+    },
+    {
+      "name": "work no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "records no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "mobile record rows fit container at320",
+      "passed": true
+    },
+    {
+      "name": "form no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "edit no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "stats no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "works no page overflow at320",
+      "passed": true
+    },
+    {
+      "name": "filtered empty state gives reset and nextaction",
+      "passed": true
+    },
+    {
+      "name": "F05 search error keeps form without fake empty",
+      "passed": true
+    },
+    {
+      "name": "F06 safe search draft survives",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /works/224",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /records",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /records/939",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /records/939/edit",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /states",
+      "passed": true
+    },
+    {
+      "name": "rendered JSP route /stats",
+      "passed": true
+    }
+  ],
+  "input_error_render_ms": [
+    223,
+    297,
+    303
+  ],
+  "newHistory": {
+    "workId": 224,
+    "firstId": 935,
+    "pastId": 937,
+    "latestId": 939,
+    "totalRecords": 4,
+    "expectedDelta": "+1.5",
+    "sameDaySeparateEvents": true
+  },
+  "count": 80,
+  "passed": true
+}

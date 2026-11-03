@@ -1,0 +1,1110 @@
+{
+  "cases": [
+    {
+      "name": "compound filters page2 renders 1 of16",
+      "passed": true
+    },
+    {
+      "name": "partial clear keyword removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear mediaType removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear genreId removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear from removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear to removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "partial clear sort removes only target and page",
+      "passed": true
+    },
+    {
+      "name": "condition link has visible keyboard focus",
+      "passed": true
+    },
+    {
+      "name": "keyboard partial clear returns to first valid page",
+      "passed": true
+    },
+    {
+      "name": "pagination retains remaining compound conditions",
+      "passed": true
+    },
+    {
+      "name": "existing scope clear preserves6conditions and resets page",
+      "passed": true
+    },
+    {
+      "name": "empty results keep active conditions and scope recovery",
+      "passed": true
+    },
+    {
+      "name": "unsafe title roundtrips as text in remaining condition",
+      "passed": true
+    },
+    {
+      "name": "statistics announces work scope and keeps hidden input",
+      "passed": true
+    },
+    {
+      "name": "statistics submit retains work scope",
+      "passed": true
+    },
+    {
+      "name": "statistics scope clear retains chosen period",
+      "passed": true
+    },
+    {
+      "name": "search reuses exactly3condition chips",
+      "passed": true
+    },
+    {
+      "name": "search partial clear keeps title/type",
+      "passed": true
+    },
+    {
+      "name": "invalid interval keeps error focus and individual recovery",
+      "passed": true
+    },
+    {
+      "name": "removing bad start date recovers stats without erasing end date",
+      "passed": true
+    },
+    {
+      "name": "save success identifies preserved current state",
+      "passed": true
+    },
+    {
+      "name": "real browser Back retains save explanation and usable submit",
+      "passed": true
+    },
+    {
+      "name": "persisted pageshow clears only progress and preserves save effect",
+      "passed": true
+    },
+    {
+      "name": "restored save explanation responds to action choice",
+      "passed": true
+    },
+    {
+      "name": "home page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "home headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "home correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "home form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "works page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "works headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "works correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "works form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "work page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "work headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "work correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "work form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "form page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "form headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "form correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "form form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "edit page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "edit headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "edit correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "edit form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "detail page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "detail headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "detail correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "detail form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "delete page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "delete headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "delete correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "delete form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "records page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "records headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "records correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "records form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "stats page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "stats headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "stats correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "stats form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "states page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "states headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "states correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "states form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "empty page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "empty headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "empty correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "empty form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "error page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "error headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "error correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "error form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "missing page no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "missing headings and member name fit at1440",
+      "passed": true
+    },
+    {
+      "name": "missing correct response at1440",
+      "passed": true
+    },
+    {
+      "name": "missing form controls labelled at1440",
+      "passed": true
+    },
+    {
+      "name": "home page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "home headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "home correct response at390",
+      "passed": true
+    },
+    {
+      "name": "home form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "works page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "works headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "works correct response at390",
+      "passed": true
+    },
+    {
+      "name": "works form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "work page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "work headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "work correct response at390",
+      "passed": true
+    },
+    {
+      "name": "work form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "form page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "form headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "form correct response at390",
+      "passed": true
+    },
+    {
+      "name": "form form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "edit page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "edit headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "edit correct response at390",
+      "passed": true
+    },
+    {
+      "name": "edit form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "detail page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "detail headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "detail correct response at390",
+      "passed": true
+    },
+    {
+      "name": "detail form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "delete page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "delete headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "delete correct response at390",
+      "passed": true
+    },
+    {
+      "name": "delete form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "records page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "records headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "records correct response at390",
+      "passed": true
+    },
+    {
+      "name": "records form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "stats page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "stats headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "stats correct response at390",
+      "passed": true
+    },
+    {
+      "name": "stats form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "states page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "states headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "states correct response at390",
+      "passed": true
+    },
+    {
+      "name": "states form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "empty page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "empty headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "empty correct response at390",
+      "passed": true
+    },
+    {
+      "name": "empty form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "error page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "error headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "error correct response at390",
+      "passed": true
+    },
+    {
+      "name": "error form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "missing page no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "missing headings and member name fit at390",
+      "passed": true
+    },
+    {
+      "name": "missing correct response at390",
+      "passed": true
+    },
+    {
+      "name": "missing form controls labelled at390",
+      "passed": true
+    },
+    {
+      "name": "home page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "home headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "home correct response at320",
+      "passed": true
+    },
+    {
+      "name": "home form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "works page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "works headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "works correct response at320",
+      "passed": true
+    },
+    {
+      "name": "works form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "work page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "work headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "work correct response at320",
+      "passed": true
+    },
+    {
+      "name": "work form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "form page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "form headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "form correct response at320",
+      "passed": true
+    },
+    {
+      "name": "form form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "edit page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "edit headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "edit correct response at320",
+      "passed": true
+    },
+    {
+      "name": "edit form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "detail page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "detail headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "detail correct response at320",
+      "passed": true
+    },
+    {
+      "name": "detail form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "delete page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "delete headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "delete correct response at320",
+      "passed": true
+    },
+    {
+      "name": "delete form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "records page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "records headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "records correct response at320",
+      "passed": true
+    },
+    {
+      "name": "records form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "stats page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "stats headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "stats correct response at320",
+      "passed": true
+    },
+    {
+      "name": "stats form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "states page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "states headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "states correct response at320",
+      "passed": true
+    },
+    {
+      "name": "states form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "empty page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "empty headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "empty correct response at320",
+      "passed": true
+    },
+    {
+      "name": "empty form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "error page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "error headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "error correct response at320",
+      "passed": true
+    },
+    {
+      "name": "error form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "missing page no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "missing headings and member name fit at320",
+      "passed": true
+    },
+    {
+      "name": "missing correct response at320",
+      "passed": true
+    },
+    {
+      "name": "missing form controls labelled at320",
+      "passed": true
+    },
+    {
+      "name": "login no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "signup no overflow at1440",
+      "passed": true
+    },
+    {
+      "name": "login no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "signup no overflow at390",
+      "passed": true
+    },
+    {
+      "name": "login no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "signup no overflow at320",
+      "passed": true
+    },
+    {
+      "name": "no javascript page errors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "layouts": [
+    {
+      "name": "home",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "works",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "work",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "form",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "edit",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "detail",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "delete",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "records",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "stats",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "states",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "empty",
+      "width": 1440,
+      "status": 200,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "error",
+      "width": 1440,
+      "status": 400,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "missing",
+      "width": 1440,
+      "status": 404,
+      "scrollWidth": 1440,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "home",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "works",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "work",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "form",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "edit",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "detail",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "delete",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "records",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "stats",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "states",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "empty",
+      "width": 390,
+      "status": 200,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "error",
+      "width": 390,
+      "status": 400,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "missing",
+      "width": 390,
+      "status": 404,
+      "scrollWidth": 390,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "home",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "works",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "work",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "form",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "edit",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "detail",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "delete",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "records",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "stats",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "states",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "empty",
+      "width": 320,
+      "status": 200,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "error",
+      "width": 320,
+      "status": 400,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    },
+    {
+      "name": "missing",
+      "width": 320,
+      "status": 404,
+      "scrollWidth": 320,
+      "overflowElements": [],
+      "clippedHeadings": [],
+      "accountFits": true
+    }
+  ],
+  "realBackPersistedEvents": [],
+  "passed": true,
+  "browser": "134.0.6998.36",
+  "count": 187
+}

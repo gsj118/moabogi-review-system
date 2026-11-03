@@ -1,0 +1,16 @@
+{
+  "retained_evidence_records": 2,
+  "retained_operations": [
+    "inspect_web_page",
+    "list_browser_targets"
+  ],
+  "page_capture_window_ms": 300,
+  "capture_status": "policy_filtered",
+  "network_requests_retained": 0,
+  "script_integrity": {
+    "included": 49,
+    "digest_match": 49,
+    "missing_text": 0
+  },
+  "meaning": "Local retained source SHA256 check only; not a replay or server audit. Network claims must use public Playwright or authenticated CUA observations."
+}

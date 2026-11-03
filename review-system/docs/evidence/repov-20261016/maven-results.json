@@ -1,0 +1,55 @@
+{
+  "unit": {
+    "name": "org.mnu.StatsServiceTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.081",
+    "cases": [
+      "percentageHasExplicitPrecisionAndEmptyDenominator",
+      "pageInputsNormalizeBeforeBoundedOffset"
+    ]
+  },
+  "integration": {
+    "name": "org.mnu.ReviewSystemIT",
+    "tests": "26",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "45.079",
+    "cases": [
+      "emptyStatisticsUseZeroAndNull",
+      "ownershipAppliesToOtherUserAndAdministrator",
+      "fixedOwnerWorkAndOptimisticEdit",
+      "ratingBoundariesDatesAndUnicode",
+      "realMapperPercentageBoundaries",
+      "compositeSaveActuallyRollsBackRecordStateAndToken",
+      "databaseConstraintsAndReferencedWorkDeletion",
+      "sameDaySeparateEventsAndDurableIdempotency",
+      "historyComparisonUsesWholeChronologyAcrossPagesAndStableTies",
+      "outOfRangePagesClampWithFiltersAndShrink",
+      "threeActionsAndEditsKeepStateIndependent",
+      "signupValidationAndUserRole",
+      "periodIncludesBothBoundaryDates",
+      "sqlInputsAreBoundAndSortIsAllowlisted",
+      "paginationUsesStableTiesAndNoGenreDuplicates",
+      "csrfLoginGateAndPublicAdminPermissions",
+      "conflictPreservesDraftAndProvidesOwnedLatestRecord",
+      "backfillDateEditAndDeletionRecalculateRewatch",
+      "representativeRecalculatesWithoutTakingRatingOutsidePeriod",
+      "failedLoginStoresOnlyUsernameAndSignupRedirectHasOnlyIntentionalFlag",
+      "externalMovieAndTvIdsAreDistinctAndManualDuplicateIsConfirmed",
+      "historyContextSkipsNullsAndSeparatesMemberWorkAndPeriod",
+      "simultaneousReplayCreatesOnlyOneRecord",
+      "requiredOctoberStatisticsAndLatestNullRating",
+      "invalidStatisticsKeepFormAndDoNotExposeAReport",
+      "historyComparisonRecalculatesAfterBackfillDateRatingAndDeletion"
+    ]
+  },
+  "health": "OK - Spring 5.3.39, Java 15.0.2",
+  "app_class_major": 52,
+  "final_packaging": "Maven package -DskipTests afterCSS-only corrections; BUILD SUCCESS",
+  "browser_checks": 80,
+  "final_layout_checks": 27
+}

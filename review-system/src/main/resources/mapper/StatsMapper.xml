@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mnu.mapper.StatsMapper">
+  <sql id="scope">
+    WITH ranked AS (SELECT vr.*,ROW_NUMBER() OVER(PARTITION BY vr.work_id ORDER BY vr.viewed_on,vr.created_at,vr.id) AS viewing_order FROM viewing_record vr WHERE vr.user_id=#{userId}),
+    scoped AS (SELECT r.* FROM ranked r JOIN work w ON w.id=r.work_id <include refid="org.mnu.mapper.RecordMapper.filter"/>)
+  </sql>
+  <sql id="representative">
+    <include refid="scope"/>, valid_ratings AS (SELECT s.*,ROW_NUMBER() OVER(PARTITION BY work_id ORDER BY viewed_on DESC,created_at DESC,id DESC) AS rating_order FROM scoped s WHERE rating IS NOT NULL),
+    representatives AS (SELECT * FROM valid_ratings WHERE rating_order=1)
+  </sql>
+  <select id="summary" resultType="map">
+    <include refid="scope"/>
+    SELECT COUNT(*) AS recordCount,COUNT(DISTINCT work_id) AS workCount,
+    COUNT(DISTINCT CASE WHEN viewing_order&gt;1 THEN work_id END) AS rewatchedWorks,
+    COALESCE(SUM(CASE WHEN viewing_order&gt;1 THEN 1 ELSE 0 END),0) AS rewatches,
+    COALESCE(SUM(CASE WHEN rating IS NULL THEN 1 ELSE 0 END),0) AS unratedCount,
+    AVG(rating) AS averageRating FROM scoped
+  </select>
+  <select id="months" resultType="map"><include refid="scope"/> SELECT DATE_FORMAT(viewed_on,'%Y-%m') AS month,COUNT(*) AS recordCount,COUNT(DISTINCT work_id) AS workCount FROM scoped GROUP BY DATE_FORMAT(viewed_on,'%Y-%m') ORDER BY month</select>
+  <select id="genres" resultType="map">
+    <include refid="representative"/>, counts AS (SELECT wg.genre_id,COUNT(*) AS record_count FROM scoped s JOIN work_genre wg ON wg.work_id=s.work_id GROUP BY wg.genre_id),
+    averages AS (SELECT wg.genre_id,COUNT(*) AS sample_size,AVG(r.rating) AS average_rating FROM representatives r JOIN work_genre wg ON wg.work_id=r.work_id GROUP BY wg.genre_id)
+    SELECT g.id,g.name,COALESCE(c.record_count,0) AS recordCount,COALESCE(a.sample_size,0) AS sampleSize,a.average_rating AS averageRating
+    FROM genre g LEFT JOIN counts c ON c.genre_id=g.id LEFT JOIN averages a ON a.genre_id=g.id ORDER BY recordCount DESC,g.name,g.id
+  </select>
+  <select id="representatives" resultType="map"><include refid="representative"/> SELECT r.id AS recordId,r.work_id AS workId,w.title,r.viewed_on AS viewedOn,r.rating FROM representatives r JOIN work w ON w.id=r.work_id ORDER BY r.rating DESC,w.title,r.work_id</select>
+  <select id="distribution" resultType="map"><include refid="scope"/> SELECT rating,COUNT(*) AS recordCount FROM scoped WHERE rating IS NOT NULL GROUP BY rating ORDER BY rating</select>
+  <select id="media" resultType="map"><include refid="scope"/> SELECT w.media_type AS mediaType,COUNT(*) AS recordCount,COUNT(DISTINCT s.work_id) AS workCount FROM scoped s JOIN work w ON w.id=s.work_id GROUP BY w.media_type ORDER BY w.media_type</select>
+  <select id="states" resultType="map">SELECT status,COUNT(*) AS workCount FROM user_work_state WHERE user_id=#{userId} GROUP BY status ORDER BY status</select>
+</mapper>

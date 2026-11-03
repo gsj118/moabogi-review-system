@@ -1,0 +1,6 @@
+# Copy outside the project and set REVIEW_CONFIG to its absolute path.
+# Environment variables DB_URL, DB_USER, DB_PASSWORD override this file.
+db.url=jdbc:mysql://localhost:3306/review_system?characterEncoding=UTF-8&connectionTimeZone=Asia/Seoul&sslMode=DISABLED&allowPublicKeyRetrieval=true
+db.user=review_app
+db.password=
+# For localhost development only. Use verified TLS and omit public-key retrieval in deployment.

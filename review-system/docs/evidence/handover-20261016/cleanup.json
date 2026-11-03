@@ -1,0 +1,9 @@
+{
+  "database": "review_system_test",
+  "deleted_user_ids": [
+    "579",
+    "578"
+  ],
+  "remaining_fixture_users": 0,
+  "app_database_untouched": true
+}
