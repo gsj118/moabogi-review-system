@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mnu.mapper.RecordMapper">
+  <sql id="ranked">WITH ranked AS (SELECT vr.*,ROW_NUMBER() OVER(PARTITION BY vr.work_id ORDER BY vr.viewed_on,vr.created_at,vr.id) AS viewing_order FROM viewing_record vr WHERE vr.user_id=#{userId})</sql>
+  <sql id="fields">r.id,r.work_id AS workId,r.viewed_on AS viewedOn,r.rating,r.review,r.created_at AS createdAt,r.updated_at AS updatedAt,r.version,r.viewing_order AS viewingOrder,w.title,w.media_type AS mediaType,(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id) AS genreNames,
+    (SELECT p.rating FROM ranked p WHERE p.work_id=r.work_id AND p.viewing_order &lt; r.viewing_order AND p.rating IS NOT NULL ORDER BY p.viewing_order DESC LIMIT 1) AS previousRating</sql>
+  <sql id="filter">
+    <where>
+      <if test="q.keyword != ''">w.title LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
+      <if test="q.mediaType != ''">AND w.media_type=#{q.mediaType}</if>
+      <if test="q.workId > 0">AND r.work_id=#{q.workId}</if>
+      <if test="q.genreId > 0">AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=r.work_id AND wg.genre_id=#{q.genreId})</if>
+      <if test="q.start != null">AND r.viewed_on &gt;= #{q.start}</if>
+      <if test="q.end != null">AND r.viewed_on &lt;= #{q.end}</if>
+    </where>
+  </sql>
+  <select id="list" resultType="map">
+    <include refid="ranked"/> SELECT <include refid="fields"/> FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/>
+    ORDER BY <choose><when test="q.sort == 'oldest'">r.viewed_on ASC,r.created_at ASC,r.id ASC</when><when test="q.sort == 'rating'">r.rating DESC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><otherwise>r.viewed_on DESC,r.created_at DESC,r.id DESC</otherwise></choose>
+    LIMIT #{q.size} OFFSET #{q.offset}
+  </select>
+  <select id="count" resultType="long"><include refid="ranked"/> SELECT COUNT(*) FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/></select>
+  <select id="get" resultType="map"><include refid="ranked"/> SELECT <include refid="fields"/> FROM ranked r JOIN work w ON w.id=r.work_id WHERE r.id=#{id}</select>
+  <!-- One member-scoped query for the displayed work page; no per-card service calls. -->
+  <select id="workSummaries" resultType="map">
+    SELECT w.id AS workId,s.status AS currentState,
+      (SELECT COUNT(*) FROM viewing_record v WHERE v.user_id=#{userId} AND v.work_id=w.id) AS recordCount,
+      (SELECT MAX(v.viewed_on) FROM viewing_record v WHERE v.user_id=#{userId} AND v.work_id=w.id) AS lastViewedOn,
+      (SELECT v.rating FROM viewing_record v WHERE v.user_id=#{userId} AND v.work_id=w.id AND v.rating IS NOT NULL ORDER BY v.viewed_on DESC,v.created_at DESC,v.id DESC LIMIT 1) AS latestRating,
+      (SELECT v.viewed_on FROM viewing_record v WHERE v.user_id=#{userId} AND v.work_id=w.id AND v.rating IS NOT NULL ORDER BY v.viewed_on DESC,v.created_at DESC,v.id DESC LIMIT 1) AS latestRatingOn
+    FROM work w LEFT JOIN user_work_state s ON s.work_id=w.id AND s.user_id=#{userId}
+    WHERE w.id IN <foreach collection="workIds" item="workId" open="(" close=")" separator=",">#{workId}</foreach>
+  </select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">INSERT INTO viewing_record(user_id,work_id,viewed_on,rating,review) VALUES(#{userId},#{workId},#{viewedOn},#{rating},#{review})</insert>
+  <update id="update">UPDATE viewing_record SET viewed_on=#{viewedOn},rating=#{rating},review=#{review},version=version+1 WHERE id=#{id} AND user_id=#{userId} AND version=#{version}</update>
+  <delete id="delete">DELETE FROM viewing_record WHERE id=#{id} AND user_id=#{userId}</delete>
+  <insert id="reserve">INSERT IGNORE INTO record_submission(user_id,request_token,request_hash) VALUES(#{userId},#{token},#{hash})</insert>
+  <select id="submission" resultType="map">SELECT request_hash AS requestHash,record_id AS recordId FROM record_submission WHERE user_id=#{userId} AND request_token=#{token} FOR UPDATE</select>
+  <update id="finish">UPDATE record_submission SET record_id=#{recordId} WHERE user_id=#{userId} AND request_token=#{token}</update>
+  <insert id="setState">INSERT INTO user_work_state(user_id,work_id,status) VALUES(#{userId},#{workId},#{status}) ON DUPLICATE KEY UPDATE status=#{status},updated_at=CURRENT_TIMESTAMP(6)</insert>
+  <delete id="clearState">DELETE FROM user_work_state WHERE user_id=#{userId} AND work_id=#{workId}</delete>
+  <select id="state" resultType="string">SELECT status FROM user_work_state WHERE user_id=#{userId} AND work_id=#{workId}</select>
+  <select id="states" resultType="map">SELECT s.work_id AS workId,s.status,s.updated_at AS updatedAt,w.title,w.media_type AS mediaType,w.release_year AS releaseYear FROM user_work_state s JOIN work w ON w.id=s.work_id WHERE s.user_id=#{userId}<if test="status != ''"> AND s.status=#{status}</if> ORDER BY s.updated_at DESC,s.work_id DESC</select>
+</mapper>

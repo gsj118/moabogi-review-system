@@ -1,0 +1,7 @@
+<configuration>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"><encoder><pattern>%date{HH:mm:ss} %-5level %logger{25} - %msg%n</pattern></encoder></appender>
+  <logger name="org.mybatis" level="WARN"/>
+  <logger name="org.mnu.mapper" level="OFF"/>
+  <logger name="com.zaxxer.hikari" level="WARN"/>
+  <root level="WARN"><appender-ref ref="CONSOLE"/></root>
+</configuration>

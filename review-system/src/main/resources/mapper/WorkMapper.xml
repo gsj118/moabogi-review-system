@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mnu.mapper.WorkMapper">
+  <sql id="fields">w.id,w.title,w.media_type AS mediaType,w.release_year AS releaseYear,w.synopsis,w.source,w.external_id AS externalId,(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id) AS genreNames</sql>
+  <sql id="filter">
+    <where>
+      <if test="q.keyword != ''">w.title LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
+      <if test="q.mediaType != ''">AND w.media_type=#{q.mediaType}</if>
+      <if test="q.genreId > 0">AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=w.id AND wg.genre_id=#{q.genreId})</if>
+    </where>
+  </sql>
+  <select id="list" resultType="map">SELECT <include refid="fields"/> FROM work w <include refid="filter"/> ORDER BY w.created_at DESC,w.id DESC LIMIT #{q.size} OFFSET #{q.offset}</select>
+  <select id="count" resultType="long">SELECT COUNT(*) FROM work w <include refid="filter"/></select>
+  <select id="get" resultType="map">SELECT <include refid="fields"/> FROM work w WHERE w.id=#{id}</select>
+  <select id="genres" resultType="map">SELECT id,name FROM genre ORDER BY name,id</select>
+  <select id="genreIds" resultType="long">SELECT genre_id FROM work_genre WHERE work_id=#{id} ORDER BY genre_id</select>
+  <select id="duplicates" resultType="map">SELECT id,title,media_type AS mediaType,release_year AS releaseYear FROM work WHERE title=#{title} AND media_type=#{mediaType} ORDER BY id LIMIT 20</select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">INSERT INTO work(title,media_type,release_year,synopsis,source,external_id,created_by) VALUES(#{title},#{mediaType},#{releaseYear},#{synopsis},<choose><when test="externalSource != null and externalSource != ''">#{externalSource}</when><otherwise>'MANUAL'</otherwise></choose>,<choose><when test="externalId > 0">#{externalId}</when><otherwise>NULL</otherwise></choose>,#{createdBy})</insert>
+  <update id="update">UPDATE work SET title=#{title},media_type=#{mediaType},release_year=#{releaseYear},synopsis=#{synopsis} WHERE id=#{id}</update>
+  <delete id="delete">DELETE FROM work WHERE id=#{id}</delete>
+  <delete id="clearGenres">DELETE FROM work_genre WHERE work_id=#{id}</delete>
+  <insert id="addGenre">INSERT INTO work_genre(work_id,genre_id) VALUES(#{workId},#{genreId})</insert>
+  <insert id="createGenre">INSERT INTO genre(name) VALUES(#{name})</insert>
+  <update id="renameGenre">UPDATE genre SET name=#{name} WHERE id=#{id}</update>
+  <delete id="deleteGenre">DELETE FROM genre WHERE id=#{id}</delete>
+</mapper>

@@ -1,0 +1,31 @@
+<%@ page pageEncoding="UTF-8" %>
+<%-- View-only QueryFilter links. Removing one condition keeps the others and omits page. --%>
+<c:set var="filterPath" value="${empty listPath?'/stats':listPath}"/>
+<c:set var="filterKeys" value="${listPath=='/works'?'keyword,mediaType,genreId':(listPath=='/records'?'keyword,mediaType,genreId,from,to,sort,workId':'keyword,mediaType,genreId,from,to,workId')}"/>
+<c:if test="${not empty filter.keyword || not empty filter.mediaType || filter.genreId>0 || (listPath!='/works' && (not empty filter.from || not empty filter.to || filter.workId>0)) || (listPath=='/records' && filter.sort!='recent')}">
+  <nav class="applied-filters" aria-label="적용 중인 조회 조건">
+    <p class="muted small-text">적용 중인 조건 · 필요한 조건만 해제할 수 있어요.</p>
+    <div class="filter-chips">
+      <c:forTokens items="${filterKeys}" delims="," var="filterKey">
+        <c:if test="${(filterKey=='keyword' && not empty filter.keyword) || (filterKey=='mediaType' && not empty filter.mediaType) || (filterKey=='genreId' && filter.genreId>0) || (filterKey=='from' && not empty filter.from) || (filterKey=='to' && not empty filter.to) || (filterKey=='sort' && filter.sort!='recent') || (filterKey=='workId' && filter.workId>0 && listPath!='/records')}">
+          <c:url var="clearFilterUrl" value="${filterPath}">
+            <c:forTokens items="${filterKeys}" delims="," var="keptKey">
+              <c:if test="${keptKey!=filterKey}"><c:param name="${keptKey}" value="${filter[keptKey]}"/></c:if>
+            </c:forTokens>
+          </c:url>
+          <a class="filter-chip" data-clear-filter="${filterKey}" href="<c:out value='${clearFilterUrl}'/>">
+            <span><c:choose>
+              <c:when test="${filterKey=='keyword'}">제목: <c:out value="${filter.keyword}"/></c:when>
+              <c:when test="${filterKey=='mediaType'}">작품 유형: <c:out value="${filter.mediaType=='MOVIE'?'영화':(filter.mediaType=='TV'?'드라마':filter.mediaType)}"/></c:when>
+              <c:when test="${filterKey=='genreId'}"><c:set var="selectedGenreName" value="장르 #${filter.genreId}"/><c:forEach items="${genres}" var="filterGenre"><c:if test="${filterGenre.id==filter.genreId}"><c:set var="selectedGenreName" value="${filterGenre.name}"/></c:if></c:forEach>장르: <c:out value="${selectedGenreName}"/></c:when>
+              <c:when test="${filterKey=='from'}">시작일: <c:out value="${filter.from}"/></c:when>
+              <c:when test="${filterKey=='to'}">종료일: <c:out value="${filter.to}"/></c:when>
+              <c:when test="${filterKey=='sort'}">정렬: <c:out value="${filter.sort=='oldest'?'오래된 감상순':(filter.sort=='rating'?'높은 평점순':filter.sort)}"/></c:when>
+              <c:when test="${filterKey=='workId'}">작품 범위: 선택 작품 #<c:out value="${filter.workId}"/></c:when>
+            </c:choose></span><span class="filter-clear">해제</span>
+          </a>
+        </c:if>
+      </c:forTokens>
+    </div>
+  </nav>
+</c:if>

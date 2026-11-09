@@ -1,0 +1,2 @@
+<%@ page pageEncoding="UTF-8" %>
+<c:if test="${r.rating!=null}"><small class="rating-change"><c:choose><c:when test="${r.previousRating==null}">첫 유효 평점</c:when><c:when test="${r.ratingChangeDirection==0}">이전 유효 평점과 같음</c:when><c:otherwise>이전보다 <fmt:formatNumber value="${r.ratingChange}" pattern="+0.0;-0.0"/>점</c:otherwise></c:choose></small></c:if>

@@ -1,0 +1,27 @@
+package org.mnu.controller;
+
+import java.util.*;
+import javax.servlet.http.*;
+import org.mnu.domain.*;
+import org.mnu.service.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+public class RecordController {
+    private final RecordService records;private final WorkService works;
+    public RecordController(RecordService records,WorkService works){this.records=records;this.works=works;}
+    @GetMapping("/records") public String list(Authentication auth,@ModelAttribute("filter") QueryFilter q,BindingResult binding,Model model,HttpServletResponse response){model.addAttribute("genres",works.genres());model.addAttribute("listPath","/records");model.addAttribute("pageTitle","나의 감상 기록");try{if(binding.hasErrors())throw new InputError("조회 조건을 확인하세요.");model.addAttribute("records",records.list(Current.id(auth),q));model.addAttribute("total",records.count(Current.id(auth),q));}catch(InputError e){model.addAttribute("queryError",true);model.addAttribute("records",Collections.emptyList());model.addAttribute("total",0);model.addAttribute("message",e.getMessage());response.setStatus(e.getStatus());}return "records";}
+    @GetMapping("/records/new") public String create(Authentication auth,@RequestParam long workId,@RequestParam(defaultValue="PAST") String action,HttpSession session,Model model){if(!"PAST".equals(action)&&!"COMPLETE".equals(action))throw new InputError("기록 저장 동작을 선택하세요.");RecordForm f=new RecordForm();f.setWorkId(workId);f.setViewedOn(records.today().toString());f.setAction(action);f.setToken(SessionTokens.issue(session));model.addAttribute("recordForm",f);return form(model,f,false,0,Current.id(auth));}
+    private String form(Model model,RecordForm form,boolean editing,long id,long userId){model.addAttribute("historySummary",records.workSummary(userId,form.getWorkId()));model.addAttribute("work",works.get(form.getWorkId()));model.addAttribute("editing",editing);model.addAttribute("recordId",id);model.addAttribute("pageTitle",editing?"감상 기록 수정":"감상 기록 남기기");return "record-form";}
+    @PostMapping("/records") public String save(Authentication auth,@ModelAttribute("recordForm") RecordForm f,BindingResult binding,HttpSession session,Model model,HttpServletResponse response,RedirectAttributes flash){try{if(binding.hasErrors())throw new InputError("감상 기록 입력 항목을 확인하세요.");SessionTokens.check(session,f.getToken());RecordService.SubmitResult result=records.submit(Current.id(auth),f);flash.addFlashAttribute("success",result.isDuplicate()?"이미 처리된 저장 요청입니다. 기존 기록을 보여드립니다.":("COMPLETE".equals(f.getAction())?"기록을 저장하고 현재 상태를 완료로 변경했습니다.":"과거 감상을 추가했습니다. 현재 상태는 유지됩니다."));return "redirect:/records/"+result.getId();}catch(InputError e){model.addAttribute("message",e.getMessage());response.setStatus(e.getStatus());return form(model,f,false,0,Current.id(auth));}}
+    @GetMapping("/records/{id}") public String detail(Authentication auth,@PathVariable long id,Model model){Map<String,Object> row=records.get(Current.id(auth),id);model.addAttribute("record",row);model.addAttribute("historySummary",records.workSummary(Current.id(auth),((Number)row.get("workId")).longValue()));model.addAttribute("pageTitle","감상 기록 상세");return "record-detail";}
+    @GetMapping("/records/{id}/edit") public String edit(Authentication auth,@PathVariable long id,Model model){Map<String,Object> row=records.get(Current.id(auth),id);RecordForm f=new RecordForm();f.setWorkId(((Number)row.get("workId")).longValue());f.setViewedOn(row.get("viewedOn").toString());f.setRating(row.get("rating")==null?"":row.get("rating").toString());f.setReview(row.get("review")==null?"":row.get("review").toString());f.setVersion(((Number)row.get("version")).intValue());model.addAttribute("recordForm",f);return form(model,f,true,id,Current.id(auth));}
+    @PostMapping("/records/{id}") public String update(Authentication auth,@PathVariable long id,@ModelAttribute("recordForm") RecordForm f,BindingResult binding,Model model,HttpServletResponse response,RedirectAttributes flash){Map<String,Object> existing=records.get(Current.id(auth),id);f.setWorkId(((Number)existing.get("workId")).longValue());try{if(binding.hasErrors())throw new InputError("감상 기록 입력 항목을 확인하세요.");records.update(Current.id(auth),id,f);flash.addFlashAttribute("success","감상 기록을 수정했습니다. 현재 상태는 유지됩니다.");return "redirect:/records/"+id;}catch(InputError e){model.addAttribute("message",e.getMessage());if(e.getStatus()==409){model.addAttribute("conflict",true);model.addAttribute("latestRecord",records.get(Current.id(auth),id));}response.setStatus(e.getStatus());return form(model,f,true,id,Current.id(auth));}}
+    @GetMapping("/records/{id}/delete") public String confirmDelete(Authentication auth,@PathVariable long id,Model model){model.addAttribute("record",records.get(Current.id(auth),id));model.addAttribute("pageTitle","감상 기록 삭제 확인");return "record-delete";}
+    @PostMapping("/records/{id}/delete") public String delete(Authentication auth,@PathVariable long id,RedirectAttributes flash){records.delete(Current.id(auth),id);flash.addFlashAttribute("success","기록을 삭제했습니다. 작품과 현재 상태는 유지됩니다.");return "redirect:/records";}
+}

@@ -1,0 +1,2 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>요청 확인 · 모아보기</title><link rel="stylesheet" href="<c:url value='/resources/css/app.css'/>"></head><body><main class="auth-card panel pad"><h1>요청 권한을 확인해 주세요.</h1><p>접근 권한이 없거나 화면이 오래되어 요청을 확인할 수 없습니다. 로그인 또는 작성 화면을 다시 열어 주세요.</p><a class="button" href="<c:url value='/login'/>">로그인 화면</a></main></body></html>
