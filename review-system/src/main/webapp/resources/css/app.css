@@ -16,3 +16,6 @@
 /* Respect the existing 200-character title and 60-character member-name limits. */
 .main{overflow-wrap:anywhere}.account>div{min-width:0;max-width:100%;overflow-wrap:anywhere}.sidebar{min-width:0}.work-detail>div{min-width:0}
 @media(max-width:380px){.filter-grid .filter-date{flex-basis:100%}}
+/* Keep a saved rating and its comparison together on narrow detail screens. */
+.record-value{min-width:0;overflow-wrap:anywhere}.record-value>small{display:block;font-size:11px;font-weight:400}.field small.field-error{color:var(--red);font-size:12px}.field [aria-invalid=true]{border-color:var(--red)}.error-field-link{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline}
+@media(max-width:760px){.record-meta>div{align-items:flex-start;gap:16px}.record-meta>div>span{flex-shrink:0}.record-value{text-align:right}.record-value .rating-change{margin-top:4px}}

@@ -16,6 +16,14 @@ document.querySelectorAll('form[data-progress]').forEach(function(form) {
   });
 });
 var error = document.querySelector('.notice.error[tabindex]');
+var fieldError = document.querySelector('[data-error-for]');
+if (error && fieldError) {
+  var fieldLink = document.createElement('a');
+  fieldLink.className = 'link error-field-link';
+  fieldLink.href = '#' + fieldError.dataset.errorFor;
+  fieldLink.textContent = '오류 항목으로 이동';
+  error.appendChild(fieldLink);
+}
 if (error) error.focus();
 
 // Use the server's calendar date so shortcuts follow the same day as validation.

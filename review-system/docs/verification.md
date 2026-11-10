@@ -1,5 +1,19 @@
 # 실제 검증 결과
 
+## 평가·통계 화면 실행 검증 — 2026-11-10
+
+Codex가 현재 PC에서 실제 실행했다. 기존 문서의 수정 내용을 보존하고 이번 절만 추가했다. 후속 38개 계획의 완료나 팀원 독립 검토·인수로 기록하지 않는다.
+
+- 수정 전 실제 재현: 잘못된 0점 제출이 HTTP400 뒤 미평점으로 보임, 오류 항목 연결 없음, 모바일 평점/변화 안내 분산, 0건 평점 분포 설명·조건별 전체 원본 이동 없음. [수정 전 결과](evidence/pm-20261110/before-issues.json).
+- 기존 `build.cmd -B -ntp verify`를 시험 설정으로 실행: 단위 2·MySQL 통합 26, 실패/오류/skip 0. 화면 수정 뒤 최종 WAR의 `clean package -DskipTests`도 성공했다. 후자는 시험 재실행이 아니다. [통합 실행](evidence/pm-20261110/maven-verify.log)·[최종 빌드](evidence/pm-20261110/maven-package.log).
+- 최종 Tomcat9/JSP·Chrome134에서 기존 `repov_browser_checks.cjs` 80개, `handover_checks.cjs` 213개, 새 `rating_stats_checks.cjs` 115개 assertion 통과. [기본 회귀](evidence/pm-20261110/browser-flow.json)·[공통 회귀](evidence/pm-20261110/handover-checks.json)·[평가/통계 회귀](evidence/pm-20261110/rating-stats-checks.json). 새 검사는 인계 문서의 fixture seed/8082 절차와 `MOA_EVIDENCE_DIR`·`NODE_PATH`를 그대로 사용해 `node .setup/rating_stats_checks.cjs`로 재현한다.
+- 실제 0/0.7/5.5/문자 평점 거부 후 원문·초안 보존, 오류 포커스→키보드 항목 이동→0.5점 재저장, 잘못된 날짜 원문→오늘 선택→5.0점 저장, 감상평 4,001자 거부→4,000자 저장, 409 초안 유지→최신 편집 새 창을 확인했다. 첫/미평점/동일/증가 평점, 빈 감상평, 200자 제목·긴 한글, 통계 0건/미평점/표본 n=1/최신 NULL·원본 ID·복합 조건 보존도 확인했다. JavaScript 오류 0.
+- 1440·390·320px의 정상/오류/충돌/빈 통계를 캡처하고 대표 화면을 직접 읽었다. 페이지 가로 넘침 없음, 상세 평점 묶음·날짜·버튼·표 가로 스크롤 안내·오류 이동을 확인했다. [320px 상세](evidence/pm-20261110/after-detail-rated-320.png)·[320px 오류](evidence/pm-20261110/after-error-320.png)·[390px 통계](evidence/pm-20261110/after-stats-390.png)·[390px 충돌](evidence/pm-20261110/after-conflict-390.png).
+- 도중 새 JSP의 태그 선언 순서 오류를 실제 실행에서 발견해 수정·재빌드했다. 새 시험 도구의 빈 문자열 SQL/줄바꿈 비교/비활성 탭 캡처 문제도 보정했다. 실패를 최종 통과로 덮어 해석하지 않는다. [JSP 실패](evidence/pm-20261110/rating-stats-attempt3-jsp.json)·[캡처 실패](evidence/pm-20261110/rating-stats-attempt4-capture.json).
+- 시험 쓰기는 `review_system_test`/8082에 한정했다. fixture를 정리하고 실제 앱 DB 7개 테이블의 전후 행 수·SHA-256 동일을 확인했다. [전](evidence/pm-20261110/app-data-before.json)·[후](evidence/pm-20261110/app-data-after.json)·[정리](evidence/pm-20261110/cleanup.json). 이번에 시작한 시험 서버와 MySQL을 종료했다. 8080 실행·Redmine 수정·Git 커밋/푸시·외부 배포는 하지 않았다.
+
+남은 조율: 고현진의 직전 감상 원문·평점 기준 ID/날짜 반환, 팀 공통 코드 작업 방식과 조우성의 독립 QA. TMDB 구현/실호출, 실제 모바일 기기·스크린리더·다른 브라우저는 이번 검증 범위 밖이다.
+
 ## 후속 시험 계획
 
 현재 적용 범위는 원 요구사항 19개 중 기본 16개+TMDB 1개이며, 파일 업로드·게시판/댓글 2개는 유보다. [Redmine 시험계획](http://114.70.92.70:3000/projects/e-team-2026/wiki/시험계획_결과)의 38개 사례는 미실행이다. #90은 #89 T03-04의 증거 검산이며 별도 사례로 세지 않는다.

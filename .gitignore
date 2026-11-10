@@ -56,3 +56,4 @@ review-system/target/
 !/.setup/repov_browser_checks.cjs
 !/.setup/repov_layout.cjs
 !/.setup/handover_checks.cjs
+!/.setup/rating_stats_checks.cjs
