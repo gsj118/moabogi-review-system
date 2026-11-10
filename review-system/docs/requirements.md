@@ -1,45 +1,36 @@
 # 요구사항별 구현·시험 연결
 
-## 현재 Redmine 협업 기준 — 2026-11-03
+## 현재 기준
 
-후속 실적 표시 반영: UC10개는 **명세 작성·등록 범위로 완료·100%**, #196은 등록 확인 기록을 남겨 진행으로 표시했다. 원 요구19개·설계·보완·실제 시험·최종 인수의 상태/진척률은 유지했다. [완료 포함 간트](http://114.70.92.70:3000/projects/e-team-2026/issues/gantt?month=10&query_id=8&year=2026) · [근거와 변경 기록](../../output/feedback-review-20261103/진척_실적반영_20261103.md). 기능 전체·독립 인수·수업 제출 완료를 뜻하지 않는다.
+원 요구사항 19개 중 기본 16개와 TMDB #25를 적용하고, 파일 업로드 #15·게시판/댓글 #16은 이번 제출에서 유보한다. 범위 결정은 #67(2026-11-04, PM 구서준), 상세 계약은 [최종 계획](개발_최종계획_20261104.md)과 [Redmine 요구사항·UC](http://114.70.92.70:3000/projects/e-team-2026/wiki/요구사항_분석서)를 따른다.
 
+아래 표는 기존 구현·검증 근거와 보완 예정 범위를 함께 표시한다. 시험 38개는 예정·미실행이며, 과거 자동시험 결과와 구분한다. UC 10개와 #196의 완료·100%는 명세 작성·등록 확인 범위다.
 
-현재 담당·일감은 [Redmine 협업 Wiki](http://114.70.92.70:3000/projects/e-team-2026/wiki)와 [피드백 반영 기록](../../output/feedback-review-20261103/반영완료_20261103.md)을 우선한다. 아래 날짜별 코드·시험·과거 담당 기록은 당시 이력이며 최신 분담으로 덮어쓰지 않는다.
+2026-10-16 인계 보완은 기존 SFR-010/INR-001/TER-001 안에서 조회 조건 개별 해제·통계 작품 범위 유지·뒤로가기 안내 보존·긴 문자열과 320px 날짜 표시를 개선한 것이다. 신규 대형 기능이나 데이터 규칙 변경은 없다. 실제 검증은 [검증 기록](verification.md), 구조는 [설계 계약](design.md), 실행·분담은 [인계 문서](team-handover.md)에서 확인한다.
 
-- 구서준: 평점·감상평 #20, 통계 #23·#24·UC #79·#80, 설계 #193→보완 #194→시험 #195. 공통 UI·PM 병행.
-- 고현진: 감상 기록 CRUD·재감상 전체 이력/순번·현재 상태, #82→#85→#89. #90은89 T03-04의 실행 증거 참조·검산이며 평가 시험은195에 있다.
-- 조우성: 회원·인증·작품·조회 및 구서준 평가·통계의 독립 교차검토. 개인 의견노트는 확정 요구·완료 근거가 아니다.
-- 제안서 요구19개 유지. 현재57개 일감은 기존 기능의 수행·검증·관리로 구분하며 추가 기능 개발을 뜻하지 않는다. 조건부 #15·#16·#25는 적용/유보 미결이다.
-- 공식 분석 마감11/03의 등록 확인 #196과 내부 후속검토11/04–06 #68을 구분한다. 설계11/18·보완11/25·시험12/02·인수/문서12/04·예비12/07–09 #197은 내부 목표이고 공식 세부 마감은 공지 확인이 필요하다.
-- 후속 시험은 독립 예정33사례와90 증거 검산이다. 이번에는 코드 수정·재시험·팀 인수·실제 제출 실적을 새로 만들지 않았다. 기존10/16 자동시험 증거와 담당자의 실제 수행·인수는 별도다.
-
-
-2026-10-16 인계 보완은 기존 SFR-010/INR-001/TER-001 안에서 조회 조건 개별 해제·통계 작품 범위 유지·뒤로가기 안내 보존·긴 문자열과 320px 날짜 표시를 개선한 것이다. 신규 대형 기능이나 데이터 규칙 변경은 없다. [최신 실제 검증](verification.md), [공통 UI 계약](design.md), [현재 인계 기준선](team-handover.md)을 우선한다. 아래 날짜별 기록과 기존 ZIP은 변경 이력으로 보존한다.
-
-기준: 팀 E 최종 제안요청서(2026-10-12), 사용자가 지정한 개발 프롬프트. 1차 회의록보다 최종 제안서의 구체 규칙을 우선했습니다. 아래 ‘구현’은 이번 Codex 코드의 상태이며 팀의 승인·검토 완료를 의미하지 않습니다.
+기준: 팀 E 최종 제안요청서(2026-10-12), #67의 범위 결정. 기존 구현·시험의 수행 기록은 아래 날짜별 이력과 연결된 증거를 따른다.
 
 | ID | 상태 | 주요 코드 / 근거 시험 |
 | --- | --- | --- |
 | SFR-001 로그인·로그아웃 | 구현 | SecurityConfig, login.jsp / 브라우저 세션 갱신·로그아웃·접근 차단 |
 | SFR-002 회원가입 | 구현 | AccountService, AccountMapper, signup.jsp / signupValidationAndUserRole, 가입 흐름 |
-| SFR-003 파일 첨부 | 유보 | 적용 범위 미확정. 게시판과 함께 한도·저장·악성 파일 검사·권한 결정 필요 |
-| SFR-004 게시판·댓글 | 유보 | 적용 범위 미확정. 개인 기록은 공개 게시판으로 자동 전환하지 않음 |
-| SFR-005 작품·공용 정보 | 구현 | WorkService, WorkMapper, works/work-form/genres / 외부 삼중 키·중복 안내·관리 권한·참조 삭제 차단 |
+| SFR-003 파일 첨부 | 이번 제출 유보 | #67 결정. 구현·시험 대상에서 제외 |
+| SFR-004 게시판·댓글 | 이번 제출 유보 | #67 결정. 개인 기록 비공개 유지 |
+| SFR-005 작품·공용 정보 | 기존 구현·TMDB 보완 예정 | WorkService, WorkMapper, works/work-form/genres / 외부 삼중 키·중복 안내·관리 권한·참조 삭제 차단. 신규 가져오기·관리자 재연결은 #17·#25 계약에 따라 보완 |
 | SFR-006 완료 기록 CRUD | 구현 | RecordService, RecordMapper, record-* / compositeSaveActuallyRollsBackRecordStateAndToken, ownership, UI CRUD |
-| SFR-007 재감상 | 구현 | ranked CTE / requiredOctoberStatisticsAndLatestNullRating, backfillDateEditAndDeletionRecalculateRewatch |
-| SFR-008 평점·감상평 | 구현 | 서버 검증·DB CHECK·JSP c:out / ratingBoundariesDatesAndUnicode, 실제 XSS·UTF-8 출력 |
+| SFR-007 재감상 | 기존 구현·직전 원문 조회 보완 예정 | ranked CTE / requiredOctoberStatisticsAndLatestNullRating, backfillDateEditAndDeletionRecalculateRewatch. 직전 감상 ID·날짜·원문 반환은 #82→#85→#89 |
+| SFR-008 평점·감상평 | 기존 구현·비교 표시 보완 예정 | 서버 검증·DB CHECK·JSP c:out / ratingBoundariesDatesAndUnicode, 실제 XSS·UTF-8 출력. 원문 비교·이전 유효 평점의 기준 날짜/링크는 #193→#194→#195 |
 | SFR-009 현재 상태 | 구현 | user_work_state, Service.state / threeActionsAndEditsKeepStateIndependent, 실제 버튼 흐름 |
 | SFR-010 조회·페이지 | 구현 | QueryFilter, EXISTS, 고정 동률 정렬 / paginationUsesStableTiesAndNoGenreDuplicates, periodIncludesBothBoundaryDates |
 | SFR-011 감상 통계 | 구현·F01/F02 수정 검증 | StatsService의 ratedPercent 소수1자리 HALF_UP, stats.jsp 표시만 수행, 오류 폼 유지 / 2026-10-14 실제 Mapper·JSP 8개 기대값 |
 | SFR-012 장르 평가 | 구현 | scoped → valid_ratings → representatives / 최신 NULL·기간 밖 평점 제외·대표 평점 재계산 |
-| SFR-013 TMDB | 미검증·유보 | API 키 없음. 실제 호출·약관·출처 표시 검토 후 적용 여부 결정. 로컬 작품으로 기본 기능 실행 |
+| SFR-013 TMDB | 채택·구현/실호출 검증 예정 | #25. 영화/TV 검색·가져오기·포스터·출처·장르 매핑·로컬 대안. 기존 삼중 키를 재사용하며 Client·마이그레이션은 미구현 |
 | PER-001 성능 | 측정 구현 | 브라우저 입력 오류 표시 시간, 별도 1,000작품·10,000기록 DB 측정. 결과와 조회 허용 기준 미확정 상태는 verification.md |
-| INR-001 통합 UI | 구현 | 공통 JSP·CSS·반응형·label·포커스·성공/오류/삭제 확인 / Chrome 데스크톱·390px 화면 확인 |
-| TER-001 시험 | 수행 | 실제 MySQL 통합시험, Tomcat·Chrome 흐름, 통계 검산·성능 측정 / evidence/*.json |
+| INR-001 통합 UI | 기존 구현·화면 보완 예정 | 공통 JSP·CSS·반응형·label·포커스·성공/오류/삭제 확인 / Chrome 데스크톱·390px 화면 확인. TMDB·포스터·원문 비교 화면은 #83→#86→#91 |
+| TER-001 시험 | 기존 시험 수행·후속 38개 미실행 | 날짜별 실제 MySQL 통합시험, Tomcat·Chrome 흐름, 통계 검산·성능 측정 / evidence/*.json. 후속 계획은 Redmine 시험계획 |
 | SER-001 보호 기준 | 구현·운영 정책 미확정 | BCrypt·최소 수집·소유권·보안 기준 문서. 실제 법적 준수 심사·운영 보관기간·팀 검토는 미실행 |
 | SER-002 공격 방지 | 구현 | Spring Security CSRF·세션·HttpOnly·SameSite·CSP·SQL 바인딩·이스케이프 / 보안 통합·브라우저 시험 |
-| QUR-001 변경 관리 | 문서화 | 아래 변경 기록, 설계·시험 연결표. 팀 검토·승인 일자는 미확정 |
+| QUR-001 변경 관리 | 범위 결정 반영·후속 검토 진행 | #67의 범위 결정, #68 교차검토와 기존 추적성표. 개발 절차 기준이며 개별 기능 UC에는 직접 연결하지 않음 |
 
 ## v0.1.1 보완과 담당 검토 단계 — 2026-10-14
 
