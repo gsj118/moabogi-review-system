@@ -57,6 +57,7 @@ review-system/target/
 !/.setup/repov_layout.cjs
 !/.setup/handover_checks.cjs
 !/.setup/rating_stats_checks.cjs
+!/.setup/review_comparison_checks.cjs
 !/.setup/doxygen_design.py
 !/.setup/doxygen_inventory.py
 !/.setup/doxygen_publish_bridge.py

@@ -31,8 +31,8 @@ async function assertField(p,id,value){
  for(const [index,text] of [[0,'평점 비교 없음'],[1,'첫 유효 평점'],[2,'평점 비교 없음'],[3,'이전 유효 평점과 같음'],[4,'이전보다 +1.0점']]){
   await p.goto(base+'/records/'+ids[index]);check('detail comparison case '+index,(await p.locator('.record-value').innerText()).includes(text));
   if(index>=3)check('comparison includes actual previous rating '+index,(await p.locator('.record-value').innerText()).includes('이전 유효 평점 ★ 4.0'));
-  if(index===0)check('first unrated empty review is explicit',(await p.locator('.review-text').innerText()).includes('남긴 감상평이 없습니다.')&&!(await p.locator('.record-meta').innerText()).includes('첫 유효 평점'));
-  if(index===3)check('long Korean review is unchanged',await p.locator('.review-text').textContent()===review);
+  if(index===0)check('first unrated empty review is explicit',(await p.locator('.current-review .review-text').innerText()).includes('남긴 감상평이 없습니다.')&&!(await p.locator('.record-meta').innerText()).includes('첫 유효 평점'));
+  if(index===3)check('long Korean review is unchanged',await p.locator('.current-review .review-text').textContent()===review);
  }
  // A tampered select must remain visible after rejection, never silently become NULL.
  for(const value of ['0','0.7','5.5','문자"><script>']){

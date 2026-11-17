@@ -19,3 +19,14 @@
 /* Keep a saved rating and its comparison together on narrow detail screens. */
 .record-value{min-width:0;overflow-wrap:anywhere}.record-value>small{display:block;font-size:11px;font-weight:400}.field small.field-error{color:var(--red);font-size:12px}.field [aria-invalid=true]{border-color:var(--red)}.error-field-link{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline}
 @media(max-width:760px){.record-meta>div{align-items:flex-start;gap:16px}.record-meta>div>span{flex-shrink:0}.record-value{text-align:right}.record-value .rating-change{margin-top:4px}}
+
+.review-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.25rem;
+}
+.review-comparison > section { min-width: 0; }
+.review-comparison .review-text { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .review-comparison { grid-template-columns: minmax(0, 1fr); }
+}
