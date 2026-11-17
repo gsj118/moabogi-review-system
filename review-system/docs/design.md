@@ -1,5 +1,41 @@
 # 설계와 연결 계약
 
+## 브랜치별 설계 기준 — 2026-11-17
+
+설계 산출물은 현재 PM 코드와 별도 QA 개발본을 구분한다. 사용자 지시 전에는 병합하지 않으며, 아래의 기존 구조·ERD·URL은 PM 작업본 기준이다.
+
+| 구분 | 확인한 기준 | Java 구조와 문서화 범위 |
+| --- | --- | --- |
+| `main` | `db056d5`, 2026-11-03 초기 업로드 | PM이 관리하는 통합 대상 브랜치. 이번 작업에서 변경하거나 다른 브랜치를 병합하지 않음 |
+| `codex/pm-rating-stats` | `8fa730d` + 현재 설명 주석 작업본 | Java 25파일, 이름 있는 타입 26개. 기존 Controller → Service → Mapper 구조, `RecordService.SubmitResult` 포함 |
+| `QA_JO` | `dfc9a33`, 2026-11-10 05:19:30 KST | Java 26파일, 이름 있는 타입 29개. 추가 타입은 `TmdbClient`, `TmdbClient.TmdbException`, `TmdbClient.TmdbException.ErrorType` |
+
+PM 운영 코드 25파일에 클래스·필드·생성자·메소드의 Doxygen 설명 주석을 추가했다. 실행 로직과 API를 바꾸는 작업이 아니며, 설계 문서는 소스의 책임·입출력·예외·실제 의존 관계를 설명한다. QA 전용 3타입은 별도 브랜치 자료로 표시하고, PM의 현재 운영 구조에 이미 통합된 관계처럼 표시하지 않는다.
+
+[설계 Wiki](http://114.70.92.70:3000/projects/e-team-2026/wiki/설계_문서)에 전체 관계도 2개, 문서·소스·캡처 ZIP 4개와 검증 메타데이터를 게시했다. 클래스 유형 일감 #215~#243 총 29개를 다시 열어 Doxygen 캡처 64개, 요구사항·유스케이스 관련 일감 관계 71개와 담당자·완료 상태를 확인했다. 코드 참조 관계도 간선 수는 PM 33개·QA 36개로 추적성 관계 수와 다르다.
+
+[위키 첫 화면](http://114.70.92.70:3000/projects/e-team-2026/wiki)과 사이드바는 요구사항·유스케이스, 설계 문서, 참고자료로 정리했다. 기존 위키 본문·첨부·팀원 의견노트 계층을 보존했고 이전 첫 화면은 협업_안내에 남겼다. 클래스 일감의 완료는 문서 작성·확인 범위다. 기존 기능·설계 작업을 팀원의 독립 검토·인수 완료로 처리하지 않았다. 실제 게시 결과는 `output/doxygen-design/class-final-verification.json`·`wiki-final-verification.json`·`wiki-attachment-verification.json`에 기록했다.
+
+QA_JO의 외부 검색 추가는 SFR-005·013 영역이다. 인증·가입·조건 조회 핵심 코드는 11/03 `main`과 동일하다. QA 브랜치에는 검색·가져오기 코드가 있으나 영화 상세 필드 선택, 외부 식별자 저장 전달, 장르 매핑의 결함이 남아 있다. 현재 설계에서 예정한 안정적인 로컬 ID·외부 장르 매핑·트랜잭션 저장 계약을 충족한다고 간주하지 않는다. 상세 근거와 실행 범위는 [11/17 검증 기록](verification.md), 브랜치 협업 원칙은 [인계 기준](team-handover.md)을 따른다.
+
+### Doxygen 생성 결과와 재현
+
+2026-11-17 Doxygen 1.18.0·Graphviz 16.1.1로 PM 26타입과 QA 29타입의 HTML·XML을 각각 생성했다. 인터페이스·중첩 클래스·enum을 포함한 타입 목록과 멤버 설명을 검사했으며 최종 누락·경고는 0이다. HTML의 버전 표시에 브랜치·원본 커밋·`documentation annotation`을 남겼다.
+
+저장소 최상위에서 `generate-doxygen.ps1`을 실행하면 `.setup/doxygen_design.py`가 고정된 PM·QA 원본을 읽고 주석본을 준비한다. Python 3.10 이상, Doxygen·Graphviz 설치와 QA 원본 커밋 객체가 필요하다. QA 전용 주석 입력은 `review-system/docs/doxygen/qa-annotation/TmdbClient.java`로 버전 관리하며 앱 빌드에는 포함하지 않는다. 도구를 찾지 못하면 설치 안내와 실행 파일 경로 지정 방법을 출력한다. 새 PC의 Git 원본 준비와 실행 조건은 [문서 생성 안내](doxygen/README.md)를 따른다.
+
+```powershell
+.\generate-doxygen.ps1
+```
+
+HTML·XML 생성 없이 소스 준비·검증·주석 패치만 갱신하려면 `-PrepareOnly` 옵션을 붙인다. 이 경우 Python과 Git만 필요하다.
+
+결과는 `output/doxygen-design/pm/html/index.html`·`qa/html/index.html`과 각 `xml/`에 저장된다. `source-validation.json`은 PM 25파일·QA 26파일의 원본/주석본 SHA-256, 문자열·문자 리터럴을 보존한 실행 토큰 일치, 생성 전후 Git ref 유지를 기록한다. `patches/pm-annotations.patch`·`qa-annotations.patch`와 `type-inventory.json`에서 주석 차이와 전체 타입 검증을 대조할 수 있다.
+
+두 문서는 각 커밋의 구조를 설명하는 산출물이다. QA_JO는 PM·main에 미병합이며, 이번 생성 과정에서 실제 TMDB API 호출·DB 통합시험은 실행하지 않았다. 소스 로직 동일 검사는 기능 완료나 팀원 독립 인수를 대신하지 않는다.
+
+`.setup/doxygen_inventory.py`는 생성된 HTML/XML에서 타입 목록과 설명 품질을 검사한다. `.setup/doxygen_updates.py`·`doxygen_publication.py`·`doxygen_publish_bridge.py`는 이번 Redmine 게시를 위한 보조 도구다. 이들은 로컬에 보관한 수정 전 UI 백업·브랜치 검토 기록·실제 캡처 manifest 등 별도 입력을 사용하며, 새 PC에서 기본 문서를 생성하는 데 필요하지 않다. 캡처·패키징 보조 도구는 실제 캡처와 검증 메타데이터가 준비된 뒤 사용한다. 원본 UI 백업·개인 설정·설치 실행 파일·생성 출력물은 Git에 올리지 않는다.
+
 ## 평가·통계 화면 보완 — 2026-11-10
 
 - 기록 상세는 이 감상의 평점·이전 유효 평점·서버가 계산한 차이를 함께 표시한다. 미평점은 ‘평점 비교 없음’으로 표시하며 비교 기준 날짜·직전 감상 원문은 추정하지 않는다.
@@ -10,7 +46,7 @@
 
 ## 현재 구현과 보완 예정
 
-[최종 계획](개발_최종계획_20261104.md)과 [Redmine 설계서](http://114.70.92.70:3000/projects/e-team-2026/wiki/시스템_설계서)를 기준으로 기존 구현을 보완한다.
+[최종 계획](개발_최종계획_20261104.md)과 [Redmine 설계서](http://114.70.92.70:3000/projects/e-team-2026/wiki/시스템_설계서)를 기준으로 기존 구현을 보완한다. 이 절의 현재 구현은 PM 작업본 기준이며, QA_JO의 별도 업로드는 위 브랜치별 현황으로 구분한다.
 
 | 구분 | 현재 구현 | 보완 예정 |
 | --- | --- | --- |
