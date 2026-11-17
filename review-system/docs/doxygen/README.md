@@ -8,6 +8,8 @@ PM 입력은 저장소의 `review-system/src/main/java/`에서 읽고, QA의 기
 
 ## 새 PC에서 준비
 
+11/17 #86의 GET 핸들러·CSP 변경 이후, **기존 제출본**은 별도 체크아웃의 `d8b4077`에서 아래 명령으로 재현한다. 기능이 달라진 현재 소스를 이전 설계의 주석본으로 비교하면 실행 토큰 검사가 실패하는 것이 정상이다.
+
 작업 브랜치를 받은 저장소와 Git, Python 3.10 이상이 필요하다. 원본 커밋 객체가 있어야 하며 기본값은 PM `8fa730d69a941e5f8487be652aaaa806c99f74eb`, QA `dfc9a33138f1099bc234cb1841fd122c5a50fffc`다. shallow clone이라 PM의 이전 커밋 객체가 없다면 `git fetch --unshallow origin`으로 이력을 확보한다. 단일 브랜치 clone에서 QA 객체가 없다면 다음과 같이 해당 브랜치를 가져온다. 이 명령들은 브랜치를 병합하지 않는다.
 
 ```powershell

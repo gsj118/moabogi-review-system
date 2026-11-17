@@ -17,6 +17,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class WorkController {
     /**
+     * @brief 외부 검색 공급자가 연결되기 전의 화면과 로컬 검색 복귀 경로를 제공합니다.
+     * @param model 화면 제목을 받을 모델
+     * @return TMDB 검색 뷰 이름
+     */
+    @GetMapping("/works/search-external")
+    public String externalSearchPage(Model model) {
+        model.addAttribute("pageTitle", "TMDB 작품 검색");
+        return "search-external";
+    }
+
+    /**
      * @brief 공용 작품·장르의 조회와 권한·중복 검증을 담당하는 서비스입니다.
      */
     private final WorkService works;

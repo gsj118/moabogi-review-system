@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
             .invalidateHttpSession(true).deleteCookies("JSESSIONID")
             .and().sessionManagement().sessionFixation().changeSessionId();
-        http.headers().contentSecurityPolicy("default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+        http.headers().contentSecurityPolicy("default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data: https://image.tmdb.org; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
         // Spring Security's CSRF protection remains enabled, including login/logout.
     }
 }

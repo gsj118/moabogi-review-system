@@ -87,3 +87,18 @@ window.addEventListener('pageshow', function(event) {
     form.querySelectorAll('.submit-progress').forEach(function(message) { message.remove(); });
   });
 });
+
+document.querySelectorAll('.tmdb-poster img[data-poster-path]').forEach(function (poster) {
+  var path = poster.dataset.posterPath;
+  if (!/^\/[A-Za-z0-9_-]+\.(?:jpg|jpeg|png|webp)$/i.test(path)) return;
+  var fallback = poster.previousElementSibling;
+  poster.addEventListener('load', function () {
+    poster.hidden = false;
+    fallback.hidden = true;
+  });
+  poster.addEventListener('error', function () {
+    poster.hidden = true;
+    fallback.hidden = false;
+  });
+  poster.src = 'https://image.tmdb.org/t/p/w185' + path;
+});
