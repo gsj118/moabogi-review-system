@@ -30,6 +30,7 @@ DEFAULT_OUTPUT = REPO / "output/doxygen-design"
 QA_ANNOTATION_SOURCE = REPO / "review-system/docs/doxygen/qa-annotation/TmdbClient.java"
 DEFAULT_PM = "8fa730d69a941e5f8487be652aaaa806c99f74eb"
 DEFAULT_QA = "dfc9a33138f1099bc234cb1841fd122c5a50fffc"
+DEFAULT_PM_BRANCH = "구서준_작업"
 
 # Literal tokens retain their exact contents, including spaces and escapes.
 # Whitespace and comments are excluded only when they occur outside literals.
@@ -348,11 +349,20 @@ def run_doxygen(output: Path, kind: str, baseline: dict, tools: dict) -> dict:
     destination = output / kind
     destination.mkdir(parents=True, exist_ok=True)
     environment = os.environ.copy()
+    project_number = "%s @ %s | documentation annotation" % (baseline["branch"], baseline["commit"])
     # Relative paths avoid Windows native argv/environment code-page loss in a
     # repository whose absolute path contains Korean directory names.
-    environment.update({"DOXYGEN_INPUT": Path(os.path.relpath(output / (kind + "-source"), REPO)).as_posix(), "DOXYGEN_OUTPUT": Path(os.path.relpath(destination, REPO)).as_posix(), "DOXYGEN_BASELINE": "%s @ %s | documentation annotation" % (baseline["branch"], baseline["commit"]), "DOXYGEN_DOT_PATH": Path(tools["dot"]["exe"]).parent.as_posix()})
+    environment.update({"DOXYGEN_INPUT": Path(os.path.relpath(output / (kind + "-source"), REPO)).as_posix(), "DOXYGEN_OUTPUT": Path(os.path.relpath(destination, REPO)).as_posix(), "DOXYGEN_BASELINE": baseline["commit"], "DOXYGEN_DOT_PATH": Path(tools["dot"]["exe"]).parent.as_posix()})
     environment["PATH"] = str(Path(tools["dot"]["exe"]).parent) + os.pathsep + environment.get("PATH", "")
-    result = subprocess.run([tools["doxygen"]["exe"], "review-system/Doxyfile"], cwd=str(REPO), env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # Native Windows getenv returns locale bytes for Korean branch names.
+    # Put the label directly in a UTF-8 config instead of passing it through
+    # DOXYGEN_BASELINE; keep the versioned template unchanged.
+    configuration, replacements = re.subn(r"(?m)^PROJECT_NUMBER\s*=.*$", lambda _: "PROJECT_NUMBER = " + json.dumps(project_number, ensure_ascii=False), (REPO / "review-system/Doxyfile").read_text(encoding="utf-8-sig"))
+    if replacements != 1:
+        raise AssertionError("Doxyfile must contain exactly one PROJECT_NUMBER entry")
+    generated_config = destination / "Doxyfile.generated"
+    generated_config.write_text(configuration, encoding="utf-8", newline="\n")
+    result = subprocess.run([tools["doxygen"]["exe"], Path(os.path.relpath(generated_config, REPO)).as_posix()], cwd=str(REPO), env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (destination / "doxygen.stdout.log").write_bytes(result.stdout)
     (destination / "doxygen.stderr.log").write_bytes(result.stderr)
     if result.returncode:
@@ -369,7 +379,7 @@ def run_doxygen(output: Path, kind: str, baseline: dict, tools: dict) -> dict:
             raise AssertionError("QA WorkForm member brief validation failed: %d members; missing %s" % (len(members), missing))
         member_validation = {"type": "org.mnu.domain.WorkForm", "member_count": len(members), "missing_briefs": missing}
     print("Doxygen %s complete: HTML and XML ready at %s" % (kind, destination), flush=True)
-    return {"exit_code": result.returncode, "html": str(destination / "html/index.html"), "xml": str(destination / "xml/index.xml"), "project_number": environment["DOXYGEN_BASELINE"], "qa_workform_members": member_validation}
+    return {"exit_code": result.returncode, "html": str(destination / "html/index.html"), "xml": str(destination / "xml/index.xml"), "project_number": project_number, "configuration": report_path(generated_config), "qa_workform_members": member_validation}
 
 
 def main() -> int:
@@ -384,8 +394,12 @@ def main() -> int:
     validate_lexer()
     baseline_file = output / "source-baselines.json"
     recorded = json.loads(baseline_file.read_text(encoding="utf-8-sig")) if baseline_file.is_file() else {}
+    recorded_pm_branch = recorded.get("pm", {}).get("branch", DEFAULT_PM_BRANCH)
+    # Accept metadata from before the branch rename without changing its
+    # recorded commit or rewriting the original validation evidence.
+    pm_branch = DEFAULT_PM_BRANCH if recorded_pm_branch == "codex/pm-rating-stats" else recorded_pm_branch
     baselines = {
-        "pm": {"branch": recorded.get("pm", {}).get("branch", "codex/pm-rating-stats"), "commit": resolve_ref(args.pm_ref or recorded.get("pm", {}).get("commit", DEFAULT_PM))},
+        "pm": {"branch": pm_branch, "commit": resolve_ref(args.pm_ref or recorded.get("pm", {}).get("commit", DEFAULT_PM))},
         "qa": {"branch": recorded.get("qa", {}).get("branch", "QA_JO"), "commit": resolve_ref(args.qa_ref or recorded.get("qa", {}).get("commit", DEFAULT_QA))},
     }
     report = {"started_at_utc": datetime.now(timezone.utc).isoformat(), "repository": str(REPO), "baselines": baselines, "recorded_baselines": recorded, "before_baseline": ref_snapshot(), "sources": {}, "doxygen": {}, "status": "running", "merge_performed": False, "annotation_note": "Prepared files differ only in comments and layout; literal token contents are preserved. Patches use LF line endings."}

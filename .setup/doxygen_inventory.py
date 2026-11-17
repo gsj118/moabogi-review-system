@@ -19,6 +19,7 @@ from typing import Any
 
 PM_COMMIT = "8fa730d69a941e5f8487be652aaaa806c99f74eb"
 QA_COMMIT = "dfc9a33138f1099bc234cb1841fd122c5a50fffc"
+PM_BRANCH = "구서준_작업"
 ALL_OPERATING_UCS = [184, 185, 187, 75, 76, 77, 79, 80, 188]
 ENUM_FQN = "org.mnu.external.TmdbClient.TmdbException.ErrorType"
 QA_ADDED = {
@@ -322,7 +323,7 @@ def _member_lines(members: list[dict[str, Any]], kind: str) -> list[str]:
 
 def issue_draft(record: dict[str, Any], limitations: dict[str, str]) -> dict[str, str]:
     fqn = record["fqn"]
-    lines = ["## 역할", record["role"], "", "## 기준 소스", f"- PM 기준: `codex/pm-rating-stats` / `{PM_COMMIT[:7]}`."]
+    lines = ["## 역할", record["role"], "", "## 기준 소스", f"- PM 기준: `{PM_BRANCH}` / `{PM_COMMIT[:7]}`."]
     if record["variants"]["pm"]["present"]:
         lines.append(f"- PM 소스: `{record['variants']['pm']['sourcefile']}`.")
     else:
@@ -433,7 +434,7 @@ def build_inventory(artifact_root: Path, pm_xml: Path | None = None, qa_xml: Pat
         "schemaVersion": 1,
         "createdAtKst": datetime.now(timezone(timedelta(hours=9))).isoformat(timespec="seconds"),
         "artifactRoot": str(root),
-        "baselines": {"pm": {"branch": "codex/pm-rating-stats", "commit": PM_COMMIT}, "qa": {"branch": "QA_JO", "commit": QA_COMMIT}},
+        "baselines": {"pm": {"branch": PM_BRANCH, "commit": PM_COMMIT}, "qa": {"branch": "QA_JO", "commit": QA_COMMIT}},
         "counts": {"pm": len(pm), "qa": len(qa), "union": len(records), "qaAdded": len(QA_ADDED), "qaChangedExisting": len(QA_CHANGED_EXISTING)},
         "validation": {"expectedTypeSetsMatch": True, "htmlFilesExist": True, "realApiExecutedByThisScript": False, "serverStateChanged": False,
                        "upstreamSourceTokenValidation": {"matchedFiles": 51, "matches": True, "verifiedBy": "root"},

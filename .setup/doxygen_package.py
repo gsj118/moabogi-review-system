@@ -297,7 +297,14 @@ def package_entries(base_dir: Path, inventory: dict, toolchain, validation: dict
         documents["assets/" + path.name] = path.read_bytes()
     sources["annotations.patch"] = (base_dir / "patches" / f"{variant}-annotations.patch").read_bytes()
     repo = Path(__file__).resolve().parents[1]
-    sources["config/Doxyfile"] = (repo / "review-system" / "Doxyfile").read_bytes()
+    baseline = inventory["baselines"][variant]
+    project_number = f"{baseline['branch']} @ {baseline['commit']} | documentation annotation"
+    configuration, replacements = re.subn(r"(?m)^PROJECT_NUMBER\s*=.*$", lambda _: "PROJECT_NUMBER = " + json.dumps(project_number, ensure_ascii=False), (repo / "review-system" / "Doxyfile").read_text(encoding="utf-8-sig"))
+    if replacements != 1:
+        raise ValueError("Doxyfile must contain exactly one PROJECT_NUMBER entry")
+    # Keep the Korean label in a UTF-8 file, avoiding native Windows getenv's
+    # locale encoding when the downloaded source bundle is regenerated.
+    sources["config/Doxyfile"] = configuration.encode("utf-8")
     sources["validation/source-validation.json"] = json_bytes({
         "baseline": validation["baselines"][variant],
         "status": validation["status"],
@@ -343,7 +350,8 @@ def readme(inventory: dict, variant: str, mode: str) -> bytes:
         ## 재생성
 
         Doxygen과 Graphviz의 기록된 버전을 별도로 준비한 뒤 압축을 푼 폴더에서 다음 환경변수를 지정합니다.
-        DOXYGEN_INPUT=source, DOXYGEN_OUTPUT=generated, DOXYGEN_BASELINE={baseline['branch']} @ {baseline['commit']}.
+        DOXYGEN_INPUT=source, DOXYGEN_OUTPUT=generated, DOXYGEN_BASELINE={baseline['commit']}.
+        브랜치 표시는 config/Doxyfile의 UTF-8 PROJECT_NUMBER에 직접 기록했다. 한글 브랜치 이름을 환경변수에 넣을 필요는 없다.
         DOXYGEN_DOT_PATH는 준비한 Graphviz의 dot 실행 파일이 있는 폴더로 지정하고 `doxygen config/Doxyfile`을 실행합니다.
         html/source로 분리된 묶음은 같은 폴더에 풀어 동일한 디렉터리 구조로 사용합니다.
         """).encode("utf-8")

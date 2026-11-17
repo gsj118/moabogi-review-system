@@ -99,7 +99,7 @@ def prepare(base_dir: Path) -> dict:
         "[[시험계획_결과|실행 범위·증거·보완 항목]]에서 상세 결과를 관리한다."
     )
     scope = (
-        f"현재 PM 작업본은 `codex/pm-rating-stats`의 {pm_commit} 기준이며 {main_commit}과 QA 개발본을 구분한다. "
+        f"현재 PM 작업본은 `구서준_작업`의 {pm_commit} 기준이며 {main_commit}과 QA 개발본을 구분한다. "
         "아래 기존 본문의 현재 구현·TMDB 구현이 남았다는 표현은 PM 작업본 기준으로 읽는다. "
         "QA_JO에는 외부 검색·가져오기 코드가 올라와 있으므로 QA 개발본의 수정·검증이 필요한 상태로 정정한다."
     )

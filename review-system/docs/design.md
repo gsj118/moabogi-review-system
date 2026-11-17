@@ -7,7 +7,7 @@
 | 구분 | 확인한 기준 | Java 구조와 문서화 범위 |
 | --- | --- | --- |
 | `main` | `db056d5`, 2026-11-03 초기 업로드 | PM이 관리하는 통합 대상 브랜치. 이번 작업에서 변경하거나 다른 브랜치를 병합하지 않음 |
-| `codex/pm-rating-stats` | `8fa730d` + 현재 설명 주석 작업본 | Java 25파일, 이름 있는 타입 26개. 기존 Controller → Service → Mapper 구조, `RecordService.SubmitResult` 포함 |
+| `구서준_작업` | `8fa730d` + 현재 설명 주석 작업본 | Java 25파일, 이름 있는 타입 26개. 기존 Controller → Service → Mapper 구조, `RecordService.SubmitResult` 포함 |
 | `QA_JO` | `dfc9a33`, 2026-11-10 05:19:30 KST | Java 26파일, 이름 있는 타입 29개. 추가 타입은 `TmdbClient`, `TmdbClient.TmdbException`, `TmdbClient.TmdbException.ErrorType` |
 
 PM 운영 코드 25파일에 클래스·필드·생성자·메소드의 Doxygen 설명 주석을 추가했다. 실행 로직과 API를 바꾸는 작업이 아니며, 설계 문서는 소스의 책임·입출력·예외·실제 의존 관계를 설명한다. QA 전용 3타입은 별도 브랜치 자료로 표시하고, PM의 현재 운영 구조에 이미 통합된 관계처럼 표시하지 않는다.
