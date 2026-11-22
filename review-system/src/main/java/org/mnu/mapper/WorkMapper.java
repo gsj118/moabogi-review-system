@@ -3,8 +3,8 @@ import java.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.mnu.domain.QueryFilter;
 public interface WorkMapper {
-    List<Map<String,Object>> list(@Param("q") QueryFilter query);
-    long count(@Param("q") QueryFilter query);
+    List<Map<String,Object>> list(@Param("userId") long userId,@Param("q") QueryFilter query);
+    long count(@Param("userId") long userId,@Param("q") QueryFilter query);
     Map<String,Object> get(long id);
     List<Map<String,Object>> genres();
     List<Long> genreIds(long id);
@@ -17,4 +17,7 @@ public interface WorkMapper {
     int createGenre(String name);
     int renameGenre(@Param("id") long id,@Param("name") String name);
     int deleteGenre(long id);
+    List<Long> hiddenGenreIds(@Param("userId") long userId);
+    int clearHiddenGenres(@Param("userId") long userId);
+    int hideGenre(@Param("userId") long userId,@Param("genreId") long genreId);
 }

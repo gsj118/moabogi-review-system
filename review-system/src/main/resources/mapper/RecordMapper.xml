@@ -34,6 +34,7 @@
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">INSERT INTO viewing_record(user_id,work_id,viewed_on,rating,review) VALUES(#{userId},#{workId},#{viewedOn},#{rating},#{review})</insert>
   <update id="update">UPDATE viewing_record SET viewed_on=#{viewedOn},rating=#{rating},review=#{review},version=version+1 WHERE id=#{id} AND user_id=#{userId} AND version=#{version}</update>
   <delete id="delete">DELETE FROM viewing_record WHERE id=#{id} AND user_id=#{userId}</delete>
+  <select id="sameDayCount" resultType="int">SELECT COUNT(*) FROM viewing_record WHERE user_id=#{userId} AND work_id=#{workId} AND viewed_on=#{viewedOn}</select>
   <insert id="reserve">INSERT IGNORE INTO record_submission(user_id,request_token,request_hash) VALUES(#{userId},#{token},#{hash})</insert>
   <select id="submission" resultType="map">SELECT request_hash AS requestHash,record_id AS recordId FROM record_submission WHERE user_id=#{userId} AND request_token=#{token} FOR UPDATE</select>
   <update id="finish">UPDATE record_submission SET record_id=#{recordId} WHERE user_id=#{userId} AND request_token=#{token}</update>

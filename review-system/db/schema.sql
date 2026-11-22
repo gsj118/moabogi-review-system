@@ -81,3 +81,12 @@ CREATE TABLE IF NOT EXISTS record_submission (
   CONSTRAINT fk_submission_user FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE RESTRICT,
   CONSTRAINT fk_submission_record FOREIGN KEY (record_id) REFERENCES viewing_record(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Per-member genres hidden from the shared work list/search only (records and statistics are unaffected).
+CREATE TABLE IF NOT EXISTS user_hidden_genre (
+  user_id BIGINT NOT NULL,
+  genre_id BIGINT NOT NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (user_id,genre_id),
+  CONSTRAINT fk_hidden_user FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE CASCADE,
+  CONSTRAINT fk_hidden_genre FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

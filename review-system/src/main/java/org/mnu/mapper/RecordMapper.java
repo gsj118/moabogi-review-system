@@ -10,6 +10,7 @@ public interface RecordMapper {
     int insert(Map<String,Object> record);
     int update(Map<String,Object> record);
     int delete(@Param("userId") long userId,@Param("id") long id);
+    int sameDayCount(@Param("userId") long userId,@Param("workId") long workId,@Param("viewedOn") java.time.LocalDate viewedOn);
     int reserve(@Param("userId") long userId,@Param("token") String token,@Param("hash") String hash);
     Map<String,Object> submission(@Param("userId") long userId,@Param("token") String token);
     int finish(@Param("userId") long userId,@Param("token") String token,@Param("recordId") long recordId);

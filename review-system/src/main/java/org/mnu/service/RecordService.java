@@ -62,9 +62,10 @@ public class RecordService {
             if(previous.get("recordId")==null)throw new InputError("이 요청으로 만든 기록은 이미 삭제되었습니다. 새 작성 화면을 이용하세요.",409);
             return new SubmitResult(((Number)previous.get("recordId")).longValue(),true);
         }
+        int sameDay=mapper.sameDayCount(userId,form.getWorkId(),(LocalDate)row.get("viewedOn"));
         row.put("userId",userId);row.put("workId",form.getWorkId());mapper.insert(row);long id=((Number)row.get("id")).longValue();
         if("COMPLETE".equals(form.getAction()))mapper.setState(userId,form.getWorkId(),"COMPLETED");
-        mapper.finish(userId,form.getToken(),id);return new SubmitResult(id,false);
+        mapper.finish(userId,form.getToken(),id);return new SubmitResult(id,false,sameDay);
     }
     @Transactional public void update(long userId,long id,RecordForm form) {
         get(userId,id);Map<String,Object> row=validate(form);row.put("id",id);row.put("userId",userId);row.put("version",form.getVersion());
@@ -76,8 +77,13 @@ public class RecordService {
     public String state(long userId,long workId) {return mapper.state(userId,workId);}
     public List<Map<String,Object>> states(long userId,String status) {status(status,true);return mapper.states(userId,status);}
     public static class SubmitResult {
-        private final long id;private final boolean duplicate;
-        public SubmitResult(long id,boolean duplicate){this.id=id;this.duplicate=duplicate;}
-        public long getId(){return id;}public boolean isDuplicate(){return duplicate;}
+        private final long id;
+        private final boolean duplicate;
+        private final int sameDayExisting;
+        public SubmitResult(long id,boolean duplicate){this(id,duplicate,0);}
+        public SubmitResult(long id,boolean duplicate,int sameDayExisting){this.id=id;this.duplicate=duplicate;this.sameDayExisting=sameDayExisting;}
+        public long getId(){return id;}
+        public boolean isDuplicate(){return duplicate;}
+        public int getSameDayExisting(){return sameDayExisting;}
     }
 }

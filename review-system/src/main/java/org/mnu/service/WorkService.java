@@ -11,8 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkService {
     private final WorkMapper mapper;
     public WorkService(WorkMapper mapper) { this.mapper = mapper; }
-    public List<Map<String,Object>> list(QueryFilter q) { q.validate();q.clampPage(mapper.count(q));return mapper.list(q); }
-    public long count(QueryFilter q) { q.validate(); return mapper.count(q); }
+    public List<Map<String,Object>> list(long userId,QueryFilter q) { q.validate();q.clampPage(mapper.count(userId,q));return mapper.list(userId,q); }
+    public long count(long userId,QueryFilter q) { q.validate(); return mapper.count(userId,q); }
+    public Set<Long> hiddenGenreIds(long userId) { return new LinkedHashSet<Long>(mapper.hiddenGenreIds(userId)); }
+    @Transactional public void setHiddenGenres(long userId,List<Long> ids) {
+        Set<Long> known=new HashSet<Long>(); for(Map<String,Object> g:genres()) known.add(((Number)g.get("id")).longValue());
+        Set<Long> wanted=new LinkedHashSet<Long>(ids);
+        if(!known.containsAll(wanted)) throw new InputError("등록된 장르를 선택하세요.");
+        mapper.clearHiddenGenres(userId);
+        for(long genreId:wanted) mapper.hideGenre(userId,genreId);
+    }
     public List<Map<String,Object>> genres() { return mapper.genres(); }
     public List<Long> genreIds(long id) { return mapper.genreIds(id); }
     public List<Map<String,Object>> duplicates(WorkForm f) { return mapper.duplicates(f.getTitle(), f.getMediaType()); }
