@@ -3,13 +3,14 @@ package org.mnu.domain;
 import java.time.LocalDate;
 
 public class QueryFilter {
-    private String keyword = "", mediaType = "", from = "", to = "", sort = "recent";
+    private String keyword = "", mediaType = "", from = "", to = "", sort = "recent", ratingLevel = "";
     private long genreId, workId;
     private int page = 1;
     public void validate() {
         if (keyword.length() > 200) throw new InputError("검색어는 200자 이내로 입력하세요.");
         if (!mediaType.isEmpty() && !mediaType.equals("MOVIE") && !mediaType.equals("TV")) throw new InputError("영화 또는 드라마를 선택하세요.");
-        if (!sort.equals("recent") && !sort.equals("oldest") && !sort.equals("rating")) throw new InputError("허용된 정렬 기준을 선택하세요.");
+        if (!sort.equals("recent") && !sort.equals("oldest") && !sort.equals("rating") && !sort.equals("ratingLow")) throw new InputError("허용된 정렬 기준을 선택하세요.");
+        if (!ratingLevel.isEmpty() && !ratingLevel.equals("MAX") && !ratingLevel.equals("MIN")) throw new InputError("평점 조건은 최고점 또는 최저점만 선택할 수 있습니다.");
         if (genreId < 0 || workId < 0) throw new InputError("조회 조건을 확인하세요.");
         if (getStart() != null && getEnd() != null && getStart().isAfter(getEnd())) throw new InputError("시작일은 종료일보다 늦을 수 없습니다.");
     }
@@ -31,6 +32,7 @@ public class QueryFilter {
     public String getMediaType() { return mediaType; } public void setMediaType(String v) { mediaType = v == null ? "" : v; }
     public String getFrom() { return from; } public void setFrom(String v) { from = v == null ? "" : v; }
     public String getTo() { return to; } public void setTo(String v) { to = v == null ? "" : v; }
+    public String getRatingLevel() { return ratingLevel; } public void setRatingLevel(String v) { ratingLevel = v == null ? "" : v; }
     public String getSort() { return sort; } public void setSort(String v) { sort = v == null ? "recent" : v; }
     public long getGenreId() { return genreId; } public void setGenreId(long v) { genreId = v; }
     public long getWorkId() { return workId; } public void setWorkId(long v) { workId = v; }

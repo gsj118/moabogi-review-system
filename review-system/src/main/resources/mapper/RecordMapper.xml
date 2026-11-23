@@ -12,11 +12,13 @@
       <if test="q.genreId > 0">AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=r.work_id AND wg.genre_id=#{q.genreId})</if>
       <if test="q.start != null">AND r.viewed_on &gt;= #{q.start}</if>
       <if test="q.end != null">AND r.viewed_on &lt;= #{q.end}</if>
+      <if test="q.ratingLevel == 'MAX'">AND r.rating = 5.0</if>
+      <if test="q.ratingLevel == 'MIN'">AND r.rating = 0.5</if>
     </where>
   </sql>
   <select id="list" resultType="map">
     <include refid="ranked"/> SELECT <include refid="fields"/> FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/>
-    ORDER BY <choose><when test="q.sort == 'oldest'">r.viewed_on ASC,r.created_at ASC,r.id ASC</when><when test="q.sort == 'rating'">r.rating DESC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><otherwise>r.viewed_on DESC,r.created_at DESC,r.id DESC</otherwise></choose>
+    ORDER BY <choose><when test="q.sort == 'oldest'">r.viewed_on ASC,r.created_at ASC,r.id ASC</when><when test="q.sort == 'rating'">r.rating DESC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><when test="q.sort == 'ratingLow'">r.rating IS NULL ASC,r.rating ASC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><otherwise>r.viewed_on DESC,r.created_at DESC,r.id DESC</otherwise></choose>
     LIMIT #{q.size} OFFSET #{q.offset}
   </select>
   <select id="count" resultType="long"><include refid="ranked"/> SELECT COUNT(*) FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/></select>
