@@ -7,4 +7,8 @@ db.password=
 # TMDB API configuration (https://www.themoviedb.org/settings/api)
 # Leave empty to disable external search feature
 tmdb.api.key=
+
+# File upload configuration (optional)
+# If empty, defaults to %USERPROFILE%\dev\review-system\uploads
+file.upload.dir=
 # For localhost development only. Use verified TLS and omit public-key retrieval in deployment.

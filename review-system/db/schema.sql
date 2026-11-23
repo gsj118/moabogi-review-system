@@ -81,3 +81,18 @@ CREATE TABLE IF NOT EXISTS record_submission (
   CONSTRAINT fk_submission_user FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE RESTRICT,
   CONSTRAINT fk_submission_record FOREIGN KEY (record_id) REFERENCES viewing_record(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS file_attachment (
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id BIGINT NOT NULL,
+  uploaded_by BIGINT NOT NULL,
+  original_filename VARCHAR(255) NOT NULL,
+  stored_filename VARCHAR(36) NOT NULL,
+  file_size BIGINT NOT NULL,
+  mime_type VARCHAR(100) NOT NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  KEY ix_attachment_post (post_id),
+  KEY ix_attachment_user (uploaded_by),
+  CONSTRAINT fk_attachment_user FOREIGN KEY (uploaded_by) REFERENCES app_user(id) ON DELETE RESTRICT,
+  CONSTRAINT ck_attachment_size CHECK (file_size > 0 AND file_size <= 10485760),
+  CONSTRAINT ck_attachment_ext CHECK (stored_filename REGEXP '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\\.(pdf|doc|docx|xls|xlsx|ppt|pptx|jpg|jpeg|png|gif|zip|txt)$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

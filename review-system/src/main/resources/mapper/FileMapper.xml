@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mnu.mapper.FileMapper">
+  <sql id="fields">fa.id,fa.post_id AS postId,fa.uploaded_by AS uploadedBy,fa.original_filename AS originalFilename,fa.stored_filename AS storedFilename,fa.file_size AS fileSize,fa.mime_type AS mimeType,fa.created_at AS createdAt</sql>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO file_attachment(post_id,uploaded_by,original_filename,stored_filename,file_size,mime_type)
+    VALUES(#{postId},#{uploadedBy},#{originalFilename},#{storedFilename},#{fileSize},#{mimeType})
+  </insert>
+
+  <delete id="delete">
+    DELETE FROM file_attachment WHERE id=#{id} AND uploaded_by=#{userId}
+  </delete>
+
+  <select id="selectById" resultType="org.mnu.domain.FileAttachment">
+    SELECT <include refid="fields"/> FROM file_attachment fa WHERE fa.id=#{id}
+  </select>
+
+  <select id="countByPost" resultType="int">
+    SELECT COUNT(*) FROM file_attachment WHERE post_id=#{postId}
+  </select>
+
+  <select id="countByPostAndUser" resultType="int">
+    SELECT COUNT(*) FROM file_attachment WHERE post_id=#{postId} AND uploaded_by=#{userId}
+  </select>
+
+  <select id="selectByPost" resultType="map">
+    SELECT <include refid="fields"/> FROM file_attachment fa
+    WHERE fa.post_id=#{postId}
+    ORDER BY fa.created_at DESC
+  </select>
+</mapper>

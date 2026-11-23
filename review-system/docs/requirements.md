@@ -23,7 +23,7 @@
 | --- | --- | --- |
 | SFR-001 로그인·로그아웃 | 구현 | SecurityConfig, login.jsp / 브라우저 세션 갱신·로그아웃·접근 차단 |
 | SFR-002 회원가입 | 구현 | AccountService, AccountMapper, signup.jsp / signupValidationAndUserRole, 가입 흐름 |
-| SFR-003 파일 첨부 | 유보 | 적용 범위 미확정. 게시판과 함께 한도·저장·악성 파일 검사·권한 결정 필요 |
+| SFR-003 파일 첨부 | 백엔드 완료 | FileService, FileMapper, FileController 구현. JSP 웹페이지는 나중에 연결 가능. 게시판(SFR-004) 미구현으로 post_id 외부 참조만 준비. 명세: docs/sfr-003-file-attachment.md |
 | SFR-004 게시판·댓글 | 유보 | 적용 범위 미확정. 개인 기록은 공개 게시판으로 자동 전환하지 않음 |
 | SFR-005 작품·공용 정보 | 구현 | WorkService, WorkMapper, works/work-form/genres / 외부 삼중 키·중복 안내·관리 권한·참조 삭제 차단 |
 | SFR-006 완료 기록 CRUD | 구현 | RecordService, RecordMapper, record-* / compositeSaveActuallyRollsBackRecordStateAndToken, ownership, UI CRUD |

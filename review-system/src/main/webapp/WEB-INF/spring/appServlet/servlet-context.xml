@@ -6,5 +6,6 @@
     <beans:property name="prefix" value="/WEB-INF/views/" />
     <beans:property name="suffix" value=".jsp" />
   </beans:bean>
+  <beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
   <context:component-scan base-package="org.mnu.controller" />
 </beans:beans>
