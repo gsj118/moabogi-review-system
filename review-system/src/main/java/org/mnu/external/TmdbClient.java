@@ -52,7 +52,7 @@ public class TmdbClient {
                     work.put("releaseYear", extractYear(item.get("movie".equals(mediaType) ? "release_date" : "first_air_date").asText("")));
                     work.put("posterPath", item.get("poster_path").asText(""));
                     work.put("overview", item.get("overview").asText(""));
-                    work.put("source", "TMDB");
+                    work.put("externalSource", "TMDB");
                     results.add(work);
                 }
             }
@@ -95,7 +95,7 @@ public class TmdbClient {
                 }
             }
             details.put("genreIds", genreIds);
-            details.put("source", "TMDB");
+            details.put("externalSource", "TMDB");
 
             return details;
         } catch (HttpClientErrorException.NotFound e) {

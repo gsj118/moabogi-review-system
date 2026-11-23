@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.mnu.domain.QueryFilter;
 import org.mnu.service.RecordService;
 import org.mnu.service.StatsService;
+import org.mnu.service.WorkService;
 import org.springframework.security.core.Authentication;
 
 @Controller
 public class HomeController {
     private final StatsService stats;
     private final RecordService records;
-    public HomeController(StatsService stats,RecordService records){this.stats=stats;this.records=records;}
+    private final WorkService works;
+    public HomeController(StatsService stats,RecordService records,WorkService works){this.stats=stats;this.records=records;this.works=works;}
     @GetMapping("/")
     public String home(Authentication auth,Model model) {
         QueryFilter q=new QueryFilter();q.setFrom(records.today().withDayOfMonth(1).toString());q.setTo(records.today().toString());
@@ -22,6 +24,13 @@ public class HomeController {
         model.addAttribute("recent",records.list(Current.id(auth),new QueryFilter()));
         model.addAttribute("filter",q);model.addAttribute("pageTitle","나의 감상 공간");
         return "home";
+    }
+    @GetMapping("/test-features")
+    public String testFeatures(Model model) {
+        model.addAttribute("genres",works.genres());
+        model.addAttribute("externalSearchEnabled",works.isExternalSearchEnabled());
+        model.addAttribute("pageTitle","기능 테스트 페이지");
+        return "test-features";
     }
 
     @GetMapping(value = "/health", produces = "text/plain;charset=UTF-8")
