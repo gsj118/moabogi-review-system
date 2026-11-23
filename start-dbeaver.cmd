@@ -1,2 +1,2 @@
 @echo off
-start "" "%USERPROFILE%\dev\review-system\dbeaver\dbeaver.exe"
+start "" "C:\Users\as742\dev\review-system\dbeaver\dbeaver.exe"
