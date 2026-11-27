@@ -12,13 +12,13 @@ public interface WorkMapper {
      * @param query 검증과 페이지 보정이 끝난 조회 조건
      * @return 등록 시각과 ID 내림차순의 공용 작품 목록
      */
-    List<Map<String,Object>> list(@Param("q") QueryFilter query);
+    List<Map<String,Object>> list(@Param("userId") long userId, @Param("q") QueryFilter query);
     /**
      * @brief 목록과 같은 작품 조건의 전체 건수를 조회합니다.
      * @param query 제목, 유형과 장르 조회 조건
      * @return 조건에 맞는 작품 수
      */
-    long count(@Param("q") QueryFilter query);
+    long count(@Param("userId") long userId, @Param("q") QueryFilter query);
     /**
      * @brief 작품 식별자로 기본 정보와 장르 이름을 조회합니다.
      * @param id 공용 작품 식별자
@@ -93,4 +93,9 @@ public interface WorkMapper {
      * @return 삭제된 행 수; 연결된 작품이 있으면 참조 제약 예외가 전달됩니다.
      */
     int deleteGenre(long id);
+    Map<String,Object> externalWork(@Param("mediaType") String type, @Param("externalId") long externalId);
+    int insertExternal(Map<String,Object> work);
+    int refreshExternal(Map<String,Object> work);
+    Long mappedGenre(@Param("mediaType") String type, @Param("externalId") long id);
+    Long unclassifiedGenre();
 }

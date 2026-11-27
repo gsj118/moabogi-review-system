@@ -38,7 +38,7 @@ async function run() {
         request.setAttribute("errorType",scenario); request.setAttribute("message","TEST_UPSTREAM_INTERNAL");
         response.setStatus("NOT_FOUND".equals(scenario)?404:500);
       }
-    %><jsp:forward page="/works/search-external"/>`,{flag:'wx'});
+    %><jsp:forward page="/WEB-INF/views/search-external.jsp"/>`,{flag:'wx'});
     const ctx=await browser.newContext({locale:'ko-KR',viewport:{width:1440,height:960}}), p=await ctx.newPage();
     results.browser=browser.version();
     const requests=[], errors=[], unexpected=[];

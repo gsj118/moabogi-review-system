@@ -1,8 +1,22 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="common/header.jspf" %>
 <nav class="flow-nav" aria-label="기록 작성 흐름"><a href="<c:url value='/works'/>">작품 찾기</a><span aria-hidden="true">/</span><span aria-current="step">작품과 나의 이력</span></nav>
-<section class="panel pad work-detail"><div class="work-cover ${work.mediaType=='TV'?'tv':''}" aria-hidden="true"><span><c:out value="${work.mediaType=='MOVIE'?'CINEMA':'SERIES'}"/></span><strong><c:out value="${work.title}"/></strong><small><c:out value="${work.releaseYear}"/></small></div><div>
+<section class="panel pad work-detail">
+<c:choose><c:when test="${work.source == 'TMDB'}">
+  <div class="tmdb-poster"><span>포스터 없음</span><img hidden alt="<c:out value='${work.title}'/> 포스터" data-poster-path="<c:out value='${work.posterPath}'/>" referrerpolicy="no-referrer"></div>
+</c:when><c:otherwise><div class="work-cover ${work.mediaType=='TV'?'tv':''}" aria-hidden="true"><span><c:out value="${work.mediaType=='MOVIE'?'CINEMA':'SERIES'}"/></span><strong><c:out value="${work.title}"/></strong><small><c:out value="${work.releaseYear}"/></small></div></c:otherwise></c:choose><div>
 <span class="pill"><c:out value="${work.mediaType=='MOVIE'?'영화':'드라마'}"/></span><h2 class="work-title"><c:out value="${work.title}"/></h2><p class="muted"><c:out value="${work.releaseYear}" default="연도 미지정"/> · <c:out value="${work.genreNames}" default="장르 미지정"/></p>
+<c:if test="${work.source == 'TMDB'}">
+  <p class="muted small-text">작품 정보·소개 발췌 출처 <a href="https://www.themoviedb.org/${work.mediaType == 'TV' ? 'tv' : 'movie'}/<c:out value='${work.externalId}'/>">TMDB 작품 원문</a></p>
+  <c:if test="${work.externalExpired == 1}">
+    <form method="post" action="<c:url value='/works/import-external'/>">
+      <%@ include file="common/csrf.jspf" %>
+      <input type="hidden" name="externalId" value="<c:out value='${work.externalId}'/>">
+      <input type="hidden" name="mediaType" value="<c:out value='${work.mediaType}'/>">
+      <button class="button secondary" type="submit">TMDB 작품 정보 갱신</button>
+    </form>
+  </c:if>
+</c:if>
 <details class="work-synopsis"><summary>공용 작품 소개</summary><p class="pre-wrap"><c:out value="${work.synopsis}" default="아직 작품 소개가 없습니다."/></p></details>
 <c:url var="completeUrl" value="/records/new"><c:param name="workId" value="${work.id}"/><c:param name="action" value="COMPLETE"/></c:url><c:url var="pastUrl" value="/records/new"><c:param name="workId" value="${work.id}"/><c:param name="action" value="PAST"/></c:url>
 <div class="form-actions"><a class="button" href="<c:out value='${completeUrl}'/>">완료하고 기록하기</a><a class="button secondary" href="<c:out value='${pastUrl}'/>">과거 감상 추가</a></div><p class="muted small-text">두 방식 모두 새 감상을 추가합니다. 과거 감상 추가는 현재 상태를 유지해요.</p>

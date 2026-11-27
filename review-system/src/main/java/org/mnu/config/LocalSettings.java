@@ -35,9 +35,14 @@ public final class LocalSettings {
      * @throws IllegalStateException 환경변수와 설정 파일 모두에 유효한 값이 없는 경우
      */
     public String required(String property, String environment) {
-        String value = System.getenv(environment);
-        if (value == null || value.trim().isEmpty()) value = values.getProperty(property);
+        String value = optional(property, environment, "");
         if (value == null || value.trim().isEmpty()) throw new IllegalStateException("DB 연결 설정이 필요합니다. REVIEW_CONFIG 또는 DB 환경변수를 확인하세요.");
         return value;
+    }
+
+    public String optional(String property, String environment, String fallback) {
+        String value = System.getenv(environment);
+        if (value == null || value.trim().isEmpty()) value = values.getProperty(property);
+        return value == null || value.trim().isEmpty() ? fallback : value.trim();
     }
 }

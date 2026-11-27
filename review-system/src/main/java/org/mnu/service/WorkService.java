@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @brief 공용 작품과 장르의 조회, 검증 및 관리 트랜잭션을 담당합니다.
- * @details 현재 구현은 직접 등록한 MANUAL 작품을 저장합니다. 작품과 장르 연결을 함께 저장하며,
+ * @details 직접 등록과 TMDB 작품 가져오기를 구분합니다. 작품과 장르 연결을 함께 저장하며,
  * 공용 정보의 수정과 삭제는 전달받은 관리자 여부를 검사합니다.
  */
 @Service
@@ -31,14 +31,20 @@ public class WorkService {
      * @return 현재 페이지의 작품 정보 목록
      * @throws InputError 조회 조건이 허용 범위를 벗어나는 경우
      */
-    public List<Map<String,Object>> list(QueryFilter q) { q.validate();q.clampPage(mapper.count(q));return mapper.list(q); }
+    public List<Map<String,Object>> list(long userId, QueryFilter q) {
+        q.validate();
+        q.clampPage(mapper.count(userId, q));
+        return mapper.list(userId, q);
+    }
+    public List<Map<String,Object>> list(QueryFilter q) { return list(0, q); }
     /**
      * @brief 작품 조회 조건을 검증하고 같은 조건의 전체 작품 수를 반환합니다.
      * @param q 제목, 유형과 장르 등의 조회 조건
      * @return 조건에 일치하는 공용 작품 수
      * @throws InputError 조회 조건이 잘못된 경우
      */
-    public long count(QueryFilter q) { q.validate(); return mapper.count(q); }
+    public long count(long userId, QueryFilter q) { q.validate(); return mapper.count(userId, q); }
+    public long count(QueryFilter q) { return count(0, q); }
     /**
      * @brief 선택 가능한 공용 장르를 이름과 ID 순서로 조회합니다.
      * @return 장르 ID와 이름 목록
@@ -142,7 +148,7 @@ public class WorkService {
      * @param administrator 인증 정보에서 판정한 관리자 여부
      * @throws InputError 권한, 장르명, 중복 오류 또는 대상 장르가 없는 경우
      */
-    @Transactional public void renameGenre(long id,String name,boolean administrator) {admin(administrator);try {if(mapper.renameGenre(id,genreName(name))!=1)throw new InputError("장르를 찾을 수 없습니다.",404);}catch(DataIntegrityViolationException e){throw new InputError("이미 등록된 장르입니다.");}}
+    @Transactional public void renameGenre(long id,String name,boolean administrator) {admin(administrator);protectUnclassified(id);try {if(mapper.renameGenre(id,genreName(name))!=1)throw new InputError("장르를 찾을 수 없습니다.",404);}catch(DataIntegrityViolationException e){throw new InputError("이미 등록된 장르입니다.");}}
     /**
      * @brief 관리자 권한으로 작품에 연결되지 않은 장르를 삭제합니다.
      * @param id 삭제할 장르 식별자
@@ -150,4 +156,9 @@ public class WorkService {
      * @throws InputError 권한이 없거나 작품이 참조하는 장르인 경우
      */
     @Transactional public void deleteGenre(long id,boolean administrator) {admin(administrator);try {mapper.deleteGenre(id);}catch(DataIntegrityViolationException e){throw new InputError("작품에 연결된 장르는 삭제할 수 없습니다.",409);}}
+
+    private void protectUnclassified(long id) {
+        if (Objects.equals(mapper.unclassifiedGenre(), id))
+            throw new InputError("외부 작품의 기본 장르인 미분류는 이름을 변경하거나 삭제할 수 없습니다.", 409);
+    }
 }

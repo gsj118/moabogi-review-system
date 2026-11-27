@@ -30,6 +30,20 @@
         <button class="button" type="submit">TMDB 검색</button>
       </form>
       <c:choose>
+        <c:when test="${not empty externalMatches}">
+          <p role="status">‘<c:out value='${externalCandidate}'/>’와 제목·유형이 같은 작품이 있습니다. 기존 작품을 열거나 별개 작품으로 등록하세요.</p>
+          <ul><c:forEach items="${externalMatches}" var="candidate">
+            <li><a href="<c:url value='/works/${candidate.id}'/>"><c:out value="${candidate.title}"/> · <c:out value="${candidate.releaseYear}" default="연도 미상"/></a></li>
+          </c:forEach></ul>
+          <form method="post" action="<c:url value='/works/import-external'/>">
+            <%@ include file="common/csrf.jspf" %>
+            <input type="hidden" name="externalId" value="<c:out value='${externalId}'/>">
+            <input type="hidden" name="mediaType" value="<c:out value='${searchType}'/>">
+            <input type="hidden" name="query" value="<c:out value='${searchTerm}'/>">
+            <input type="hidden" name="confirmDuplicate" value="true">
+            <button class="button" type="submit">별개 작품으로 등록</button>
+          </form>
+        </c:when>
         <c:when test="${errorType == 'NOT_FOUND' || (empty errorType && empty message && not empty searchTerm && empty externalResults)}">
           <p role="status">검색 결과가 없습니다.</p>
         </c:when>
@@ -38,6 +52,10 @@
             <c:when test="${errorType == 'RATE_LIMITED'}">검색 요청이 많습니다. 잠시 후 다시 시도해 주세요.</c:when>
             <c:when test="${errorType == 'TIMEOUT'}">TMDB 응답 시간이 초과됐습니다.</c:when>
             <c:when test="${errorType == 'SERVER_ERROR'}">TMDB 서버가 응답하지 않습니다.</c:when>
+            <c:when test="${errorType == 'AUTH_ERROR'}">TMDB 인증 설정을 확인해야 합니다.</c:when>
+            <c:when test="${errorType == 'INVALID_RESPONSE'}">TMDB에서 받은 작품 정보를 읽을 수 없습니다.</c:when>
+            <c:when test="${errorType == 'NETWORK_ERROR'}">TMDB에 연결할 수 없습니다.</c:when>
+            <c:when test="${errorType == 'INPUT_ERROR'}"><c:out value="${message}"/></c:when>
             <c:otherwise>TMDB 검색을 마치지 못했습니다.</c:otherwise>
           </c:choose></p>
         </c:when>
@@ -60,6 +78,7 @@
                         <%@ include file="common/csrf.jspf" %>
                         <input type="hidden" name="externalId" value="<c:out value='${work.externalId}'/>">
                         <input type="hidden" name="mediaType" value="<c:out value='${work.mediaType}'/>">
+                        <input type="hidden" name="query" value="<c:out value='${searchTerm}'/>">
                         <input type="hidden" name="confirmDuplicate" value="false">
                         <button class="button small" type="submit">이 작품 등록</button>
                       </form>
@@ -71,6 +90,19 @@
           </ul>
         </c:when>
       </c:choose>
+      <c:if test="${externalPages > 1}">
+        <nav class="pagination" aria-label="TMDB 검색 페이지">
+          <c:if test="${externalPage > 1}">
+            <c:url var="prevExternal" value="/works/search-external"><c:param name="query" value="${query}"/><c:param name="mediaType" value="${mediaType}"/><c:param name="page" value="${externalPage-1}"/></c:url>
+            <a class="link" href="<c:out value='${prevExternal}'/>">이전 페이지</a>
+          </c:if>
+          <span><c:out value="${externalPage}"/> / <c:out value="${externalPages}"/></span>
+          <c:if test="${externalPage < externalPages}">
+            <c:url var="nextExternal" value="/works/search-external"><c:param name="query" value="${query}"/><c:param name="mediaType" value="${mediaType}"/><c:param name="page" value="${externalPage+1}"/></c:url>
+            <a class="link" href="<c:out value='${nextExternal}'/>">다음 페이지</a>
+          </c:if>
+        </nav>
+      </c:if>
     </c:otherwise>
   </c:choose>
   <nav class="form-actions" aria-label="다른 작품 찾기">

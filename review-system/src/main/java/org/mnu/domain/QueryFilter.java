@@ -10,7 +10,8 @@ public class QueryFilter {
         mediaType = "" /**< @brief 작품 유형이며 빈 문자열은 전체 유형입니다. */,
         from = "" /**< @brief 시작일 원문이며 빈 문자열은 시작일 제한 없음입니다. */,
         to = "" /**< @brief 종료일 원문이며 빈 문자열은 종료일 제한 없음입니다. */,
-        sort = "recent" /**< @brief 허용 정렬은 recent, oldest, rating입니다. */;
+        sort = "recent" /**< @brief 기록 목록의 감상일 또는 평점 정렬 방식입니다. */,
+        ratingLevel = "" /**< @brief 기록 목록의 고정 평점 조건(MAX=5.0, MIN=0.5)입니다. */;
     private long genreId /**< @brief 장르 범위이며 0은 장르 제한 없음입니다. */,
         workId /**< @brief 작품 범위이며 0은 작품 제한 없음입니다. */;
     /**
@@ -24,7 +25,10 @@ public class QueryFilter {
     public void validate() {
         if (keyword.length() > 200) throw new InputError("검색어는 200자 이내로 입력하세요.");
         if (!mediaType.isEmpty() && !mediaType.equals("MOVIE") && !mediaType.equals("TV")) throw new InputError("영화 또는 드라마를 선택하세요.");
-        if (!sort.equals("recent") && !sort.equals("oldest") && !sort.equals("rating")) throw new InputError("허용된 정렬 기준을 선택하세요.");
+        if (!sort.equals("recent") && !sort.equals("oldest") && !sort.equals("rating") && !sort.equals("ratingLow")) throw new InputError("허용된 정렬 기준을 선택하세요.");
+        if (!ratingLevel.isEmpty() && !ratingLevel.equals("MAX") && !ratingLevel.equals("MIN")) {
+            throw new InputError("평점 조건은 최고점 또는 최저점만 선택할 수 있습니다.");
+        }
         if (genreId < 0 || workId < 0) throw new InputError("조회 조건을 확인하세요.");
         if (getStart() != null && getEnd() != null && getStart().isAfter(getEnd())) throw new InputError("시작일은 종료일보다 늦을 수 없습니다.");
     }
@@ -124,6 +128,10 @@ public class QueryFilter {
      * @return 정렬 코드
      */
     public String getSort() { return sort; }
+
+    public String getRatingLevel() { return ratingLevel; }
+    public void setRatingLevel(String value) { ratingLevel = value == null ? "" : value; }
+
     /**
      * @brief null이면 recent로 바꾸며 허용 정렬 검사는 validate에서 수행합니다.
      * @param v 정렬 코드

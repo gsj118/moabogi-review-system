@@ -154,9 +154,10 @@ public class RecordService {
             if(previous.get("recordId")==null)throw new InputError("이 요청으로 만든 기록은 이미 삭제되었습니다. 새 작성 화면을 이용하세요.",409);
             return new SubmitResult(((Number)previous.get("recordId")).longValue(),true);
         }
+        int sameDayExisting = mapper.sameDayCount(userId, form.getWorkId(), (LocalDate) row.get("viewedOn"));
         row.put("userId",userId);row.put("workId",form.getWorkId());mapper.insert(row);long id=((Number)row.get("id")).longValue();
         if("COMPLETE".equals(form.getAction()))mapper.setState(userId,form.getWorkId(),"COMPLETED");
-        mapper.finish(userId,form.getToken(),id);return new SubmitResult(id,false);
+        mapper.finish(userId,form.getToken(),id);return new SubmitResult(id, false, sameDayExisting);
     }
     /**
      * @brief 소유권과 version을 검사해 감상 내용을 수정합니다.
@@ -220,12 +221,19 @@ public class RecordService {
          * @brief 동일 UUID와 내용의 기존 처리 결과를 재사용했으면 true입니다.
          */
         private final boolean duplicate;
+        private final int sameDayExisting;
         /**
          * @brief 감상 저장 결과를 생성합니다.
          * @param id 결과 감상 기록 식별자
          * @param duplicate 동일 요청의 이전 결과 재사용 여부
          */
-        public SubmitResult(long id,boolean duplicate){this.id=id;this.duplicate=duplicate;}
+        public SubmitResult(long id, boolean duplicate) { this(id, duplicate, 0); }
+        public SubmitResult(long id, boolean duplicate, int sameDayExisting) {
+            this.id = id;
+            this.duplicate = duplicate;
+            this.sameDayExisting = sameDayExisting;
+        }
+        public int getSameDayExisting() { return sameDayExisting; }
         /**
          * @brief 결과 감상 기록 식별자를 반환합니다.
          * @return 새로 저장했거나 재사용한 기록의 ID

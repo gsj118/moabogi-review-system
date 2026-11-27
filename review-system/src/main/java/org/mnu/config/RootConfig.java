@@ -23,6 +23,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 @Import(SecurityConfig.class)
 public class RootConfig {
+    @Bean public org.mnu.external.TmdbClient tmdbClient() {
+        LocalSettings settings = new LocalSettings();
+        boolean enabled = Boolean.parseBoolean(settings.optional("tmdb.enabled", "TMDB_ENABLED", "true"));
+        return new org.mnu.external.TmdbClient(enabled
+                ? settings.optional("tmdb.read.access.token", "TMDB_READ_ACCESS_TOKEN", "") : "");
+    }
+
     /**
      * @brief 감상일 계산에 사용하는 Asia/Seoul 시스템 시계를 제공합니다.
      * @return 서울 시간대를 사용하는 Clock

@@ -59,6 +59,9 @@ review-system/target/
 !/.setup/rating_stats_checks.cjs
 !/.setup/review_comparison_checks.cjs
 !/.setup/external_search_checks.cjs
+!/.setup/team_browser_fixture.cjs
+!/.setup/team_filter_checks.cjs
+!/.setup/team_tmdb_checks.cjs
 !/.setup/doxygen_design.py
 !/.setup/doxygen_inventory.py
 !/.setup/doxygen_publish_bridge.py

@@ -29,6 +29,8 @@ public interface RecordMapper {
      * @return 본인 기록 정보; 없거나 다른 회원의 기록이면 null
      */
     Map<String,Object> get(@Param("userId") long userId,@Param("id") long id);
+    int sameDayCount(@Param("userId") long userId, @Param("workId") long workId,
+                     @Param("viewedOn") java.time.LocalDate viewedOn);
     /**
      * @brief 지정 작품들의 본인 전체 기록과 현재 상태를 일괄 조회합니다.
      * @details 최근 감상일과 최근 유효 평점의 날짜는 다를 수 있으며 기간 필터는 적용하지 않습니다.

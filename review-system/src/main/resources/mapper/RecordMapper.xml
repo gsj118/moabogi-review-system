@@ -1,26 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mnu.mapper.RecordMapper">
+  <resultMap id="detail" type="map" autoMapping="false">
+    <id property="id" column="id"/>
+    <result property="workId" column="workId"/>
+    <result property="viewedOn" column="viewedOn"/>
+    <result property="rating" column="rating"/>
+    <result property="review" column="review"/>
+    <result property="createdAt" column="createdAt"/>
+    <result property="updatedAt" column="updatedAt"/>
+    <result property="version" column="version"/>
+    <result property="viewingOrder" column="viewingOrder"/>
+    <result property="title" column="title"/>
+    <result property="mediaType" column="mediaType"/>
+    <result property="genreNames" column="genreNames"/>
+    <result property="previousRating" column="previousRating"/>
+    <association property="previousViewing" javaType="map" notNullColumn="priorId" autoMapping="false">
+      <id property="id" column="priorId"/>
+      <result property="viewedOn" column="priorDate"/>
+      <result property="rating" column="priorRating"/>
+      <result property="review" column="priorReview"/>
+    </association>
+    <association property="ratingBasis" javaType="map" notNullColumn="basisId" autoMapping="false">
+      <id property="id" column="basisId"/>
+      <result property="viewedOn" column="basisDate"/>
+    </association>
+  </resultMap>
   <sql id="ranked">WITH ranked AS (SELECT vr.*,ROW_NUMBER() OVER(PARTITION BY vr.work_id ORDER BY vr.viewed_on,vr.created_at,vr.id) AS viewing_order FROM viewing_record vr WHERE vr.user_id=#{userId})</sql>
-  <sql id="fields">r.id,r.work_id AS workId,r.viewed_on AS viewedOn,r.rating,r.review,r.created_at AS createdAt,r.updated_at AS updatedAt,r.version,r.viewing_order AS viewingOrder,w.title,w.media_type AS mediaType,(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id) AS genreNames,
+  <sql id="fields">r.id,r.work_id AS workId,r.viewed_on AS viewedOn,r.rating,r.review,r.created_at AS createdAt,r.updated_at AS updatedAt,r.version,r.viewing_order AS viewingOrder,<include refid="org.mnu.mapper.WorkMapper.visibleTitle"/> AS title,w.media_type AS mediaType,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE
+      (SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id)
+    END AS genreNames</sql>
+  <sql id="listFields"><include refid="fields"/>,
     (SELECT p.rating FROM ranked p WHERE p.work_id=r.work_id AND p.viewing_order &lt; r.viewing_order AND p.rating IS NOT NULL ORDER BY p.viewing_order DESC LIMIT 1) AS previousRating</sql>
-  <sql id="filter">
-    <where>
-      <if test="q.keyword != ''">w.title LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
+  <sql id="filterConditions">
+      <if test="q.keyword != ''"><include refid="org.mnu.mapper.WorkMapper.visibleTitle"/> LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
       <if test="q.mediaType != ''">AND w.media_type=#{q.mediaType}</if>
       <if test="q.workId > 0">AND r.work_id=#{q.workId}</if>
-      <if test="q.genreId > 0">AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=r.work_id AND wg.genre_id=#{q.genreId})</if>
+      <if test="q.genreId > 0">AND NOT (<include refid="org.mnu.mapper.WorkMapper.expired"/>) AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=r.work_id AND wg.genre_id=#{q.genreId})</if>
       <if test="q.start != null">AND r.viewed_on &gt;= #{q.start}</if>
       <if test="q.end != null">AND r.viewed_on &lt;= #{q.end}</if>
+  </sql>
+  <sql id="filter"><where><include refid="org.mnu.mapper.RecordMapper.filterConditions"/></where></sql>
+  <sql id="recordFilters">
+    <where>
+      <include refid="filterConditions"/>
+      <if test="q.ratingLevel == 'MAX'">AND r.rating = 5.0</if>
+      <if test="q.ratingLevel == 'MIN'">AND r.rating = 0.5</if>
     </where>
   </sql>
   <select id="list" resultType="map">
-    <include refid="ranked"/> SELECT <include refid="fields"/> FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/>
-    ORDER BY <choose><when test="q.sort == 'oldest'">r.viewed_on ASC,r.created_at ASC,r.id ASC</when><when test="q.sort == 'rating'">r.rating DESC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><otherwise>r.viewed_on DESC,r.created_at DESC,r.id DESC</otherwise></choose>
+    <include refid="ranked"/> SELECT <include refid="listFields"/> FROM ranked r JOIN work w ON w.id=r.work_id <include refid="recordFilters"/>
+    ORDER BY <choose><when test="q.sort == 'oldest'">r.viewed_on ASC,r.created_at ASC,r.id ASC</when><when test="q.sort == 'rating'">r.rating DESC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><when test="q.sort == 'ratingLow'">r.rating IS NULL ASC,r.rating ASC,r.viewed_on DESC,r.created_at DESC,r.id DESC</when><otherwise>r.viewed_on DESC,r.created_at DESC,r.id DESC</otherwise></choose>
     LIMIT #{q.size} OFFSET #{q.offset}
   </select>
-  <select id="count" resultType="long"><include refid="ranked"/> SELECT COUNT(*) FROM ranked r JOIN work w ON w.id=r.work_id <include refid="filter"/></select>
-  <select id="get" resultType="map"><include refid="ranked"/> SELECT <include refid="fields"/> FROM ranked r JOIN work w ON w.id=r.work_id WHERE r.id=#{id}</select>
+  <select id="count" resultType="long"><include refid="ranked"/> SELECT COUNT(*) FROM ranked r JOIN work w ON w.id=r.work_id <include refid="recordFilters"/></select>
+  <select id="get" resultMap="detail">
+    <include refid="ranked"/>
+    SELECT <include refid="fields"/>,
+           prior.id AS priorId, prior.viewed_on AS priorDate, prior.rating AS priorRating, prior.review AS priorReview,
+           basis.id AS basisId, basis.viewed_on AS basisDate, basis.rating AS previousRating
+    FROM ranked r
+    JOIN work w ON w.id=r.work_id
+    LEFT JOIN ranked prior ON prior.work_id=r.work_id AND prior.viewing_order=r.viewing_order-1
+    LEFT JOIN ranked basis ON basis.id=(
+      SELECT p.id FROM ranked p
+      WHERE p.work_id=r.work_id AND p.viewing_order &lt; r.viewing_order AND p.rating IS NOT NULL
+      ORDER BY p.viewing_order DESC LIMIT 1
+    )
+    WHERE r.id=#{id}
+  </select>
+  <select id="sameDayCount" resultType="int">
+    SELECT COUNT(*) FROM viewing_record WHERE user_id=#{userId} AND work_id=#{workId} AND viewed_on=#{viewedOn}
+  </select>
   <!-- One member-scoped query for the displayed work page; no per-card service calls. -->
   <select id="workSummaries" resultType="map">
     SELECT w.id AS workId,s.status AS currentState,
@@ -40,5 +92,7 @@
   <insert id="setState">INSERT INTO user_work_state(user_id,work_id,status) VALUES(#{userId},#{workId},#{status}) ON DUPLICATE KEY UPDATE status=#{status},updated_at=CURRENT_TIMESTAMP(6)</insert>
   <delete id="clearState">DELETE FROM user_work_state WHERE user_id=#{userId} AND work_id=#{workId}</delete>
   <select id="state" resultType="string">SELECT status FROM user_work_state WHERE user_id=#{userId} AND work_id=#{workId}</select>
-  <select id="states" resultType="map">SELECT s.work_id AS workId,s.status,s.updated_at AS updatedAt,w.title,w.media_type AS mediaType,w.release_year AS releaseYear FROM user_work_state s JOIN work w ON w.id=s.work_id WHERE s.user_id=#{userId}<if test="status != ''"> AND s.status=#{status}</if> ORDER BY s.updated_at DESC,s.work_id DESC</select>
+  <select id="states" resultType="map">SELECT s.work_id AS workId,s.status,s.updated_at AS updatedAt,
+    <include refid="org.mnu.mapper.WorkMapper.visibleTitle"/> AS title, w.media_type AS mediaType,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE w.release_year END AS releaseYear FROM user_work_state s JOIN work w ON w.id=s.work_id WHERE s.user_id=#{userId}<if test="status != ''"> AND s.status=#{status}</if> ORDER BY s.updated_at DESC,s.work_id DESC</select>
 </mapper>

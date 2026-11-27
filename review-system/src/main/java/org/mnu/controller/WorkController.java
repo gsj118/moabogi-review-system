@@ -4,6 +4,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import org.mnu.domain.*;
 import org.mnu.service.*;
+import org.mnu.external.TmdbClient;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +17,58 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class WorkController {
-    /**
-     * @brief 외부 검색 공급자가 연결되기 전의 화면과 로컬 검색 복귀 경로를 제공합니다.
-     * @param model 화면 제목을 받을 모델
-     * @return TMDB 검색 뷰 이름
-     */
+    private final TmdbClient tmdb;
+    private final TmdbImportService imports;
+
     @GetMapping("/works/search-external")
-    public String externalSearchPage(Model model) {
-        model.addAttribute("pageTitle", "TMDB 작품 검색");
+    public String externalSearchPage(@RequestParam(defaultValue="") String query,
+            @RequestParam(defaultValue="MOVIE") String mediaType, @RequestParam(defaultValue="1") int page,
+            Model model, HttpServletResponse response) {
+        searchModel(model, query, mediaType);
+        if (!query.trim().isEmpty() && tmdb.isEnabled()) {
+            try {
+                TmdbClient.SearchPage result = tmdb.search(query, mediaType, page);
+                model.addAttribute("externalResults", result.getWorks());
+                model.addAttribute("externalPage", page);
+                model.addAttribute("externalPages", result.getPages());
+            } catch (InputError error) {
+                tmdbError(model, response, error);
+            }
+        }
         return "search-external";
+    }
+
+    @PostMapping("/works/import-external")
+    public String importExternal(Authentication auth, @RequestParam long externalId, @RequestParam String mediaType,
+            @RequestParam(defaultValue="") String query, @RequestParam(defaultValue="false") boolean confirmDuplicate,
+            Model model, HttpServletResponse response, RedirectAttributes flash) {
+        searchModel(model, query, mediaType);
+        try {
+            long id = imports.importWork(Current.id(auth), mediaType, externalId, confirmDuplicate);
+            flash.addFlashAttribute("success", "선택한 TMDB 작품을 열었습니다.");
+            return "redirect:/works/" + id;
+        } catch (TmdbImportService.ConfirmationRequired choice) {
+            model.addAttribute("externalMatches", choice.getMatches());
+            model.addAttribute("externalCandidate", choice.getTitle());
+            model.addAttribute("externalId", externalId);
+            response.setStatus(choice.getStatus());
+        } catch (InputError error) {
+            tmdbError(model, response, error);
+        }
+        return "search-external";
+    }
+
+    private void searchModel(Model model, String query, String mediaType) {
+        model.addAttribute("pageTitle", "TMDB 작품 검색");
+        model.addAttribute("externalSearchEnabled", tmdb.isEnabled());
+        model.addAttribute("query", query);
+        model.addAttribute("mediaType", mediaType);
+    }
+
+    private void tmdbError(Model model, HttpServletResponse response, InputError error) {
+        model.addAttribute("errorType", error instanceof TmdbClient.Failure ? ((TmdbClient.Failure) error).getKind() : "INPUT_ERROR");
+        model.addAttribute("message", error.getMessage());
+        response.setStatus(error.getStatus());
     }
 
     /**
@@ -40,7 +84,12 @@ public class WorkController {
      * @param works 공용 작품·장르 서비스
      * @param records 회원 감상 기록·상태 서비스
      */
-    public WorkController(WorkService works,RecordService records){this.works=works;this.records=records;}
+    public WorkController(WorkService works, RecordService records, TmdbClient tmdb, TmdbImportService imports) {
+        this.works = works;
+        this.records = records;
+        this.tmdb = tmdb;
+        this.imports = imports;
+    }
     /**
      * @brief 등록된 공용 작품과 인증 회원의 작품별 이력 요약을 조회하고 조건 오류를 표시합니다.
      * @param auth 로그인 회원의 인증 정보
@@ -50,7 +99,7 @@ public class WorkController {
      * @param response 오류 HTTP 상태를 설정할 응답
      * @return works 뷰 이름
      */
-    @GetMapping("/works") public String list(Authentication auth,@ModelAttribute("filter") QueryFilter q,BindingResult binding,Model model,HttpServletResponse response){model.addAttribute("genres",works.genres());model.addAttribute("listPath","/works");model.addAttribute("pageTitle","작품 찾기");try{if(binding.hasErrors())throw new InputError("검색 조건을 확인하세요.");List<Map<String,Object>> found=works.list(q);model.addAttribute("works",found);List<Long> ids=new ArrayList<Long>();for(Map<String,Object> row:found)ids.add(((Number)row.get("id")).longValue());model.addAttribute("myWorks",records.workSummaries(Current.id(auth),ids));model.addAttribute("total",works.count(q));}catch(InputError e){model.addAttribute("queryError",true);model.addAttribute("message",e.getMessage());response.setStatus(e.getStatus());}return "works";}
+    @GetMapping("/works") public String list(Authentication auth,@ModelAttribute("filter") QueryFilter q,BindingResult binding,Model model,HttpServletResponse response){model.addAttribute("genres",works.genres());model.addAttribute("listPath","/works");model.addAttribute("pageTitle","작품 찾기");try{if(binding.hasErrors())throw new InputError("검색 조건을 확인하세요.");List<Map<String,Object>> found=works.list(Current.id(auth),q);model.addAttribute("works",found);List<Long> ids=new ArrayList<Long>();for(Map<String,Object> row:found)ids.add(((Number)row.get("id")).longValue());model.addAttribute("myWorks",records.workSummaries(Current.id(auth),ids));model.addAttribute("total",works.count(Current.id(auth),q));}catch(InputError e){model.addAttribute("queryError",true);model.addAttribute("message",e.getMessage());response.setStatus(e.getStatus());}return "works";}
     /**
      * @brief 전달된 검색 제목을 초안으로 삼아 공용 작품 직접 등록 폼을 만듭니다.
      * @param title 초기 제목이며 생략하면 빈 문자열

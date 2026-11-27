@@ -73,7 +73,32 @@ public class RecordController {
      * @param flash 리다이렉트 후 표시할 일회성 안내
      * @return 성공하면 기록 상세 리다이렉트, 입력 오류이면 작성 폼
      */
-    @PostMapping("/records") public String save(Authentication auth,@ModelAttribute("recordForm") RecordForm f,BindingResult binding,HttpSession session,Model model,HttpServletResponse response,RedirectAttributes flash){try{if(binding.hasErrors())throw new InputError("감상 기록 입력 항목을 확인하세요.");SessionTokens.check(session,f.getToken());RecordService.SubmitResult result=records.submit(Current.id(auth),f);flash.addFlashAttribute("success",result.isDuplicate()?"이미 처리된 저장 요청입니다. 기존 기록을 보여드립니다.":("COMPLETE".equals(f.getAction())?"기록을 저장하고 현재 상태를 완료로 변경했습니다.":"과거 감상을 추가했습니다. 현재 상태는 유지됩니다."));return "redirect:/records/"+result.getId();}catch(InputError e){model.addAttribute("message",e.getMessage());response.setStatus(e.getStatus());return form(model,f,false,0,Current.id(auth));}}
+    @PostMapping("/records")
+    public String save(Authentication auth, @ModelAttribute("recordForm") RecordForm form, BindingResult binding,
+                       HttpSession session, Model model, HttpServletResponse response, RedirectAttributes flash) {
+        long userId = Current.id(auth);
+        try {
+            if (binding.hasErrors()) throw new InputError("감상 기록 입력 항목을 확인하세요.");
+            SessionTokens.check(session, form.getToken());
+            RecordService.SubmitResult result = records.submit(userId, form);
+            String message;
+            if (result.isDuplicate()) {
+                message = "이미 처리된 저장 요청입니다. 기존 기록을 보여드립니다.";
+            } else {
+                message = "COMPLETE".equals(form.getAction()) ? "기록을 저장하고 현재 상태를 완료로 변경했습니다."
+                        : "과거 감상을 추가했습니다. 현재 상태는 유지됩니다.";
+                if (result.getSameDayExisting() > 0) {
+                    message += " 같은 날짜의 기존 기록 " + result.getSameDayExisting() + "건과 별개의 감상으로 저장했습니다.";
+                }
+            }
+            flash.addFlashAttribute("success", message);
+            return "redirect:/records/" + result.getId();
+        } catch (InputError e) {
+            model.addAttribute("message", e.getMessage());
+            response.setStatus(e.getStatus());
+            return form(model, form, false, 0, userId);
+        }
+    }
     /**
      * @brief 본인 소유 기록과 해당 작품의 전체이력 요약을 상세 화면에 전달합니다.
      * @param auth 로그인 회원의 인증 정보
@@ -82,7 +107,17 @@ public class RecordController {
      * @return record-detail 뷰 이름
      * @throws InputError 본인 소유의 해당 기록을 찾을 수 없는 경우
      */
-    @GetMapping("/records/{id}") public String detail(Authentication auth,@PathVariable long id,Model model){Map<String,Object> row=records.get(Current.id(auth),id);model.addAttribute("record",row);model.addAttribute("historySummary",records.workSummary(Current.id(auth),((Number)row.get("workId")).longValue()));model.addAttribute("pageTitle","감상 기록 상세");return "record-detail";}
+    @GetMapping("/records/{id}")
+    public String detail(Authentication auth, @PathVariable long id, Model model) {
+        long userId = Current.id(auth);
+        Map<String,Object> record = records.get(userId, id);
+        model.addAttribute("record", record);
+        model.addAttribute("previousViewing", record.get("previousViewing"));
+        model.addAttribute("ratingBasis", record.get("ratingBasis"));
+        model.addAttribute("historySummary", records.workSummary(userId, ((Number) record.get("workId")).longValue()));
+        model.addAttribute("pageTitle", "감상 기록 상세");
+        return "record-detail";
+    }
     /**
      * @brief 본인 기록을 읽어 작품·평가·날짜·버전이 채워진 수정 폼을 구성합니다.
      * @param auth 로그인 회원의 인증 정보
