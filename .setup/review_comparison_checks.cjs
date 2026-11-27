@@ -26,7 +26,7 @@ async function scenario({page, browser, report, check}) {
     report.workSource = 'verified live import';
   } else {
     await go(page, '/works/new');
-    await page.locator('#title').fill('통합 비교 ' + fixture.prefix);
+    await page.locator('#title').fill('통합 비교 ' + fixture.prefix + ' ' + Date.now());
     await page.locator('[name=genreIds][value="' + fixture.genre_id + '"]').check();
     await submit(page, page.getByRole('button', {name: '작품 등록', exact: true}));
     work = idOf(page.url(), 'works');
@@ -65,6 +65,12 @@ async function scenario({page, browser, report, check}) {
   check('T09-01 records, distinct work, rewatched works, repeat events',
     await page.locator('.metric>strong').allTextContents(), ['3건','1개','1개','2회']);
   check('T09-01 two rated records out of three', await page.locator('#rated-percent').innerText(), '66.7%');
+  for (const sample of fixture.cases) {
+    const params = new URLSearchParams({workId: sample.work_id, from: sample.date, to: sample.date});
+    await go(page, '/stats?' + params);
+    check('T09-01 displayed rated fraction ' + sample.rated + '/' + sample.total,
+      await page.locator('#rated-percent').innerText(), sample.expected);
+  }
   await go(page, stats + '&from=2026-09-01&to=2026-10-31');
   const representative = page.getByRole('link', {name: '원본 보기 →', exact: true});
   check('T09-02 latest unrated B keeps in-period A as representative', await representative.getAttribute('href'), p(a));

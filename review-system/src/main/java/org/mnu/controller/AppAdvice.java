@@ -53,7 +53,10 @@ public class AppAdvice {
      * @brief 조회 조건의 허용 필드를 제한하고 페이지 문자열을 안전하게 정규화합니다.
      * @param b 허용 필드와 변환기를 설정할 데이터 바인더
      */
-    @InitBinder("filter") public void filter(WebDataBinder b){b.setAllowedFields("keyword","mediaType","genreId","workId","from","to","page","sort");b.registerCustomEditor(int.class,"page",new java.beans.PropertyEditorSupport(){@Override public void setAsText(String text){setValue(QueryFilter.parsePage(text));}});}
+    @InitBinder("filter") public void filter(WebDataBinder b){
+        b.setAllowedFields("keyword","mediaType","genreId","workId","from","to","page","sort","ratingLevel");
+        b.registerCustomEditor(int.class,"page",new java.beans.PropertyEditorSupport(){@Override public void setAsText(String text){setValue(QueryFilter.parsePage(text));}});
+    }
     /**
      * @brief 사용자 오류의 메시지와 지정된 HTTP 상태를 공통 오류 화면에 반영합니다.
      * @param e 안내 메시지와 상태를 가진 입력 오류

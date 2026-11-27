@@ -82,6 +82,18 @@ async function realImports({page, report, check}) {
     }
     await go(page, '/works/' + localId);
     check(item.kind + ' saved title on detail', await page.locator('.work-title').innerText(), expectedTitle);
+    check(item.kind + ' detail links to the official work',
+      await page.getByRole('link', {name:'TMDB 작품 원문',exact:true}).getAttribute('href'),
+      'https://www.themoviedb.org/' + item.kind + '/' + item.id);
+    const poster = page.locator('.work-detail .tmdb-poster img');
+    check(item.kind + ' poster path matches the current official response',
+      await poster.getAttribute('data-poster-path'), details.poster_path || '');
+    if (details.poster_path) {
+      await poster.waitFor({state:'visible', timeout:10000});
+      check(item.kind + ' official poster loads on the work detail',
+        await poster.evaluate(img => img.complete && img.naturalWidth > 0 &&
+          new URL(img.currentSrc).hostname === 'image.tmdb.org'), true);
+    }
     const meta = await page.locator('.work-detail p.muted').first().innerText();
     check(item.kind + ' saved year and genres visible', [meta.includes(String(year)), ...names.map(n => meta.includes(n))], Array(1 + names.length).fill(true));
     const stored = sql('SELECT title,release_year,source,media_type,external_id FROM work WHERE id=' + localId).split('\t');

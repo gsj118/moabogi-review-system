@@ -4,7 +4,7 @@ const {account, fixture, go, literal, login, run, sql, submit} = require('./team
 
 async function scenario({page, browser, check}) {
   const user = Number(fixture.user_ids[0]);
-  const title = '개인 설정 ' + fixture.prefix;
+  const title = '개인 설정 ' + fixture.prefix + ' ' + Date.now();
   const work = Number(sql("INSERT INTO work(title,media_type,created_by) VALUES(" + literal(title) + ",'MOVIE'," + user + '); SELECT LAST_INSERT_ID()'));
   const genre = Number(fixture.genre_id);
   sql('INSERT INTO work_genre(work_id,genre_id) SELECT ' + work + ",id FROM genre WHERE name IN ('드라마','SF')");
