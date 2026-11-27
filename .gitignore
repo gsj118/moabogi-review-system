@@ -56,3 +56,15 @@ review-system/target/
 !/.setup/repov_browser_checks.cjs
 !/.setup/repov_layout.cjs
 !/.setup/handover_checks.cjs
+!/.setup/rating_stats_checks.cjs
+!/.setup/review_comparison_checks.cjs
+!/.setup/external_search_checks.cjs
+!/.setup/team_browser_fixture.cjs
+!/.setup/team_filter_checks.cjs
+!/.setup/team_tmdb_checks.cjs
+!/.setup/doxygen_design.py
+!/.setup/doxygen_inventory.py
+!/.setup/doxygen_publish_bridge.py
+!/.setup/doxygen_updates.py
+!/.setup/doxygen_package.py
+!/.setup/doxygen_publication.py

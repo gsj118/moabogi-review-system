@@ -1,4 +1,5 @@
 -- Apply explicitly to a selected, dedicated database. Never executed on app startup.
+-- For a new installation, apply db/migrations/*.sql in filename order after this base schema.
 SET NAMES utf8mb4;
 SET time_zone = '+09:00';
 CREATE TABLE IF NOT EXISTS app_user (

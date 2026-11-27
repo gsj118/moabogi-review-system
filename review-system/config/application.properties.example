@@ -4,3 +4,7 @@ db.url=jdbc:mysql://localhost:3306/review_system?characterEncoding=UTF-8&connect
 db.user=review_app
 db.password=
 # For localhost development only. Use verified TLS and omit public-key retrieval in deployment.
+# Optional TMDB server settings. Environment TMDB_ENABLED and TMDB_READ_ACCESS_TOKEN take precedence.
+# A missing token disables external search; local works remain available.
+tmdb.enabled=true
+tmdb.read.access.token=

@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mnu.mapper.WorkMapper">
-  <sql id="fields">w.id,w.title,w.media_type AS mediaType,w.release_year AS releaseYear,w.synopsis,w.source,w.external_id AS externalId,(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id) AS genreNames</sql>
+  <sql id="expired">w.source='TMDB' AND (w.external_fetched_at IS NULL OR w.external_fetched_at &lt; DATE_SUB(UTC_TIMESTAMP(6), INTERVAL 180 DAY))</sql>
+  <sql id="visibleTitle">CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN '외부 작품 정보 갱신 필요' ELSE w.title END</sql>
+  <sql id="fields">
+    w.id,<include refid="visibleTitle"/> AS title,w.media_type AS mediaType,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE w.release_year END AS releaseYear,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE w.synopsis END AS synopsis,
+    w.source,w.external_id AS externalId,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN 1 ELSE 0 END AS externalExpired,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE w.poster_path END AS posterPath,
+    CASE WHEN <include refid="org.mnu.mapper.WorkMapper.expired"/> THEN NULL ELSE
+      (SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ' · ') FROM work_genre wg JOIN genre g ON g.id=wg.genre_id WHERE wg.work_id=w.id)
+    END AS genreNames
+  </sql>
   <sql id="filter">
     <where>
-      <if test="q.keyword != ''">w.title LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
+      <if test="q.keyword != ''"><include refid="visibleTitle"/> LIKE CONCAT('%',#{q.term},'%') ESCAPE '='</if>
       <if test="q.mediaType != ''">AND w.media_type=#{q.mediaType}</if>
-      <if test="q.genreId > 0">AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=w.id AND wg.genre_id=#{q.genreId})</if>
+      <if test="q.genreId > 0">AND NOT (<include refid="org.mnu.mapper.WorkMapper.expired"/>) AND EXISTS(SELECT 1 FROM work_genre wg WHERE wg.work_id=w.id AND wg.genre_id=#{q.genreId})</if>
+      <if test="userId > 0">AND ((<include refid="org.mnu.mapper.WorkMapper.expired"/>) OR NOT EXISTS (SELECT 1 FROM work_genre hw JOIN user_hidden_genre h ON h.genre_id=hw.genre_id WHERE h.user_id=#{userId} AND hw.work_id=w.id))</if>
     </where>
   </sql>
   <select id="list" resultType="map">SELECT <include refid="fields"/> FROM work w <include refid="filter"/> ORDER BY w.created_at DESC,w.id DESC LIMIT #{q.size} OFFSET #{q.offset}</select>
   <select id="count" resultType="long">SELECT COUNT(*) FROM work w <include refid="filter"/></select>
   <select id="get" resultType="map">SELECT <include refid="fields"/> FROM work w WHERE w.id=#{id}</select>
   <select id="genres" resultType="map">SELECT id,name FROM genre ORDER BY name,id</select>
-  <select id="genreIds" resultType="long">SELECT genre_id FROM work_genre WHERE work_id=#{id} ORDER BY genre_id</select>
-  <select id="duplicates" resultType="map">SELECT id,title,media_type AS mediaType,release_year AS releaseYear FROM work WHERE title=#{title} AND media_type=#{mediaType} ORDER BY id LIMIT 20</select>
+  <select id="genreIds" resultType="long">SELECT wg.genre_id FROM work_genre wg JOIN work w ON w.id=wg.work_id WHERE w.id=#{id} AND NOT (<include refid="org.mnu.mapper.WorkMapper.expired"/>) ORDER BY wg.genre_id</select>
+  <select id="duplicates" resultType="map">SELECT w.id,w.title,w.media_type AS mediaType,w.release_year AS releaseYear FROM work w WHERE w.title=#{title} AND w.media_type=#{mediaType} AND NOT (<include refid="org.mnu.mapper.WorkMapper.expired"/>) ORDER BY w.id LIMIT 20</select>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">INSERT INTO work(title,media_type,release_year,synopsis,source,external_id,created_by) VALUES(#{title},#{mediaType},#{releaseYear},#{synopsis},'MANUAL',NULL,#{createdBy})</insert>
   <update id="update">UPDATE work SET title=#{title},media_type=#{mediaType},release_year=#{releaseYear},synopsis=#{synopsis} WHERE id=#{id}</update>
   <delete id="delete">DELETE FROM work WHERE id=#{id}</delete>
@@ -23,4 +36,20 @@
   <insert id="createGenre">INSERT INTO genre(name) VALUES(#{name})</insert>
   <update id="renameGenre">UPDATE genre SET name=#{name} WHERE id=#{id}</update>
   <delete id="deleteGenre">DELETE FROM genre WHERE id=#{id}</delete>
+  <select id="externalWork" resultType="map">
+    SELECT id, CASE WHEN external_fetched_at >= DATE_SUB(UTC_TIMESTAMP(6), INTERVAL 180 DAY) THEN 1 ELSE 0 END AS fresh
+    FROM work WHERE source='TMDB' AND media_type=#{mediaType} AND external_id=#{externalId}
+  </select>
+  <insert id="insertExternal" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO work(title,media_type,release_year,synopsis,source,external_id,created_by,poster_path,external_fetched_at)
+    VALUES(#{title},#{mediaType},#{releaseYear},#{overview},'TMDB',#{externalId},#{createdBy},#{posterPath},UTC_TIMESTAMP(6))
+  </insert>
+  <update id="refreshExternal">
+    UPDATE work SET title=#{title},release_year=#{releaseYear},synopsis=#{overview},poster_path=#{posterPath},external_fetched_at=UTC_TIMESTAMP(6)
+    WHERE id=#{id} AND source='TMDB' AND media_type=#{mediaType} AND external_id=#{externalId}
+  </update>
+  <select id="mappedGenre" resultType="long">
+    SELECT genre_id FROM external_genre_map WHERE source='TMDB' AND media_type=#{mediaType} AND external_genre_id=#{externalId}
+  </select>
+  <select id="unclassifiedGenre" resultType="long">SELECT id FROM genre WHERE name='미분류'</select>
 </mapper>

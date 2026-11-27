@@ -16,6 +16,14 @@ document.querySelectorAll('form[data-progress]').forEach(function(form) {
   });
 });
 var error = document.querySelector('.notice.error[tabindex]');
+var fieldError = document.querySelector('[data-error-for]');
+if (error && fieldError) {
+  var fieldLink = document.createElement('a');
+  fieldLink.className = 'link error-field-link';
+  fieldLink.href = '#' + fieldError.dataset.errorFor;
+  fieldLink.textContent = '오류 항목으로 이동';
+  error.appendChild(fieldLink);
+}
 if (error) error.focus();
 
 // Use the server's calendar date so shortcuts follow the same day as validation.
@@ -78,4 +86,19 @@ window.addEventListener('pageshow', function(event) {
     // Keep permanent status text such as the chosen save effect.
     form.querySelectorAll('.submit-progress').forEach(function(message) { message.remove(); });
   });
+});
+
+document.querySelectorAll('.tmdb-poster img[data-poster-path]').forEach(function (poster) {
+  var path = poster.dataset.posterPath;
+  if (!/^\/[A-Za-z0-9_-]+\.(?:jpg|jpeg|png|webp)$/i.test(path)) return;
+  var fallback = poster.previousElementSibling;
+  poster.addEventListener('load', function () {
+    poster.hidden = false;
+    fallback.hidden = true;
+  });
+  poster.addEventListener('error', function () {
+    poster.hidden = true;
+    fallback.hidden = false;
+  });
+  poster.src = 'https://image.tmdb.org/t/p/w185' + path;
 });

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mnu.mapper.HiddenGenreMapper">
+  <select id="choices" resultType="map">
+    SELECT g.id, g.name, CASE WHEN h.user_id IS NULL THEN 0 ELSE 1 END AS hidden
+    FROM genre g LEFT JOIN user_hidden_genre h ON h.genre_id=g.id AND h.user_id=#{userId}
+    ORDER BY g.name, g.id
+  </select>
+  <select id="lockMember" resultType="long">
+    SELECT id FROM app_user WHERE id=#{userId} FOR UPDATE
+  </select>
+  <delete id="clear">DELETE FROM user_hidden_genre WHERE user_id=#{userId}</delete>
+  <insert id="insert">
+    INSERT INTO user_hidden_genre (user_id,genre_id) VALUES
+    <foreach collection="genreIds" item="genreId" separator=",">(#{userId},#{genreId})</foreach>
+  </insert>
+</mapper>

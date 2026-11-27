@@ -48,6 +48,8 @@ for db in ['review_system','review_system_test','review_system_perf']:
     subprocess.run(client+['--defaults-extra-file='+str(admin_file),'--default-character-set=utf8mb4','--database='+db],input=schema,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,creationflags=subprocess.CREATE_NO_WINDOW)
     seed="INSERT IGNORE INTO genre(name) VALUES('드라마'),('SF'),('코미디'),('액션'),('스릴러'),('로맨스'),('다큐멘터리'),('애니메이션');"
     subprocess.run(client+['--defaults-extra-file='+str(admin_file),'--default-character-set=utf8mb4','--database='+db],input=seed.encode('utf-8'),check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,creationflags=subprocess.CREATE_NO_WINDOW)
+    for migration in sorted((project/'review-system/db/migrations').glob('*.sql')):
+        subprocess.run(client+['--defaults-extra-file='+str(admin_file),'--default-character-set=utf8mb4','--database='+db],input=migration.read_bytes(),check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,creationflags=subprocess.CREATE_NO_WINDOW)
 subprocess.run(['icacls',str(config),'/inheritance:r','/grant:r',str(Path.home().name)+':(OI)(CI)F','SYSTEM:(OI)(CI)F'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW)
 for name,body in {
     'start-db.cmd':'"'+str(mysql/'bin/mysqld.exe')+'" --defaults-file="'+str(ini)+'" --console\r\n',
